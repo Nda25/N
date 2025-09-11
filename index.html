@@ -1,373 +1,352 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>عرض التنبؤ بالطلب المتقدم</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: #f0f4f8;
-            color: #2c3e50;
-        }
-        .container-bg {
-            background-color: #ecf0f1;
-            min-height: calc(100vh - 96px);
-        }
-        .header-bg {
-            background-color: #2980b9;
-        }
-        .tab-active {
-            color: #2980b9;
-            background-color: white;
-            border-bottom: 3px solid #f39c12;
-        }
-        .slide {
-            display: none;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-            padding: 2rem;
-        }
-        .slide.active {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .slide-content h2 {
-            font-size: 2.25rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            color: #2980b9;
-            border-bottom: 2px solid #f39c12;
-            padding-bottom: 0.5rem;
-        }
-        .section-title {
-            background-color: #34495e;
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 9999px;
-            text-align: center;
-            font-weight: 700;
-            margin-bottom: 2rem;
-        }
-        .info-card {
-            background-color: white;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 1.5rem;
-        }
-        .list-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-        }
-        .list-item i {
-            font-size: 1.5rem;
-            color: #2980b9;
-            margin-left: 1rem;
-            min-width: 1.5rem;
-            text-align: center;
-        }
-    </style>
-</head>
-<body class="bg-gray-100">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>عرض التنبؤ بالطلب المتقدم</title>
 
-    <!-- شريط التنقل العلوي -->
-    <nav class="header-bg text-white p-4 shadow-lg fixed top-0 w-full z-10">
-        <div class="container mx-auto flex flex-wrap justify-center gap-2 md:gap-4">
-            <button class="nav-tab px-3 py-2 text-xs md:text-sm lg:text-base font-bold rounded-lg transition duration-300 ease-in-out hover:bg-white hover:text-blue-600" data-target="slide1">1. المدخل</button>
-            <button class="nav-tab px-3 py-2 text-xs md:text-sm lg:text-base font-bold rounded-lg transition duration-300 ease-in-out hover:bg-white hover:text-blue-600" data-target="slide2">2. الأهمية</button>
-            <button class="nav-tab px-3 py-2 text-xs md:text-sm lg:text-base font-bold rounded-lg transition duration-300 ease-in-out hover:bg-white hover:text-blue-600" data-target="slide3">3. المستويات</button>
-            <button class="nav-tab px-3 py-2 text-xs md:text-sm lg:text-base font-bold rounded-lg transition duration-300 ease-in-out hover:bg-white hover:text-blue-600" data-target="slide4">4. الأساليب</button>
-            <button class="nav-tab px-3 py-2 text-xs md:text-sm lg:text-base font-bold rounded-lg transition duration-300 ease-in-out hover:bg-white hover:text-blue-600" data-target="slide5">5. العوامل</button>
-            <button class="nav-tab px-3 py-2 text-xs md:text-sm lg:text-base font-bold rounded-lg transition duration-300 ease-in-out hover:bg-white hover:text-blue-600" data-target="slide6">6. التطبيقات</button>
-            <button class="nav-tab px-3 py-2 text-xs md:text-sm lg:text-base font-bold rounded-lg transition duration-300 ease-in-out hover:bg-white hover:text-blue-600" data-target="slide7">7. الحديثة</button>
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- خط -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      /* ألوان العلامة */
+      --pri:#2563eb;    /* أزرق */
+      --pri-2:#1d4ed8;  /* أزرق أعمق */
+      --acc:#f59e0b;    /* ذهبي */
+      --ink:#0f172a;    /* حبر */
+      --muted:#64748b;  /* رمادي-مزرق */
+      --card: 255,255,255;
+      --glass-bg: rgba(255,255,255,0.75);
+      --glass-br: 16px;
+      --shadow: 0 8px 30px rgba(2,6,23,.12);
+    }
+    html,body{scroll-behavior:smooth}
+    body{font-family:'Cairo', system-ui, -apple-system, Segoe UI, Roboto, Arial; color:var(--ink)}
+    /* شريط التقدّم أعلى الصفحة */
+    #progress{position:fixed; inset:0 auto auto 0; height:4px; width:0; background:linear-gradient(90deg,var(--acc),#fb923c); z-index:60}
+
+    /* هيدر جراديانت مع تموج */
+    .hero{
+      background: radial-gradient(1200px 500px at 50% -10%, rgba(255,255,255,.35), transparent),
+                  linear-gradient(135deg, #0ea5e9 0%, var(--pri) 40%, var(--pri-2) 100%);
+      color:white;
+    }
+    .wave{display:block; line-height:0}
+    .glass{
+      background: var(--glass-bg);
+      -webkit-backdrop-filter: blur(12px);
+              backdrop-filter: blur(12px);
+      border-radius: var(--glass-br);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,.35);
+    }
+    .chip{background:white; color:var(--pri); font-weight:700; border-radius:999px; padding:.35rem .9rem; display:inline-flex; align-items:center; gap:.5rem; border:1px solid rgba(37,99,235,.15)}
+    .chip i{color:var(--acc)}
+    .sect-title{font-weight:800; font-size:1.6rem; color:var(--pri); border-bottom:3px solid var(--acc); display:inline-block; padding-bottom:.35rem}
+    .li{display:flex; gap:1rem}
+    .li i{color:var(--pri); margin-top:.25rem; min-width:1.25rem; text-align:center}
+    .kbd{border:1px solid #cbd5e1; border-bottom:3px solid #94a3b8; border-radius:8px; padding:.1rem .45rem; font-weight:700; font-size:.85rem}
+
+    /* تنشيط التبويب */
+    .nav-btn{--_bg: transparent; --_c: white; }
+    .nav-btn.active{--_bg:white; --_c:var(--pri); box-shadow:0 6px 18px rgba(255,255,255,.35)}
+    .nav-btn{background:var(--_bg); color:var(--_c); transition:.25s ease}
+
+    /* داكن */
+    .dark body{color:#e5e7eb}
+    .dark .glass{background: rgba(15,23,42,.55); border-color: rgba(148,163,184,.18)}
+    .dark .chip{background:#0b1220; color:#e5e7eb; border-color:#1f2a44}
+    .dark .sect-title{color:#93c5fd; border-color:#fbbf24}
+
+    /* زر أعلى */
+    #backTop{position:fixed; right:1rem; bottom:1rem; display:none; z-index:50}
+  </style>
+</head>
+<body class="bg-[#f1f5f9] dark:bg-[#0b1220]">
+
+  <!-- تقدم الصفحة -->
+  <div id="progress"></div>
+
+  <!-- الهيدر -->
+  <header class="hero relative">
+    <nav class="sticky top-0 bg-transparent/20 backdrop-blur z-40">
+      <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center gap-2 justify-between">
+        <div class="flex items-center gap-3">
+          <span class="chip"><i class="fa-solid fa-chart-line"></i> التنبؤ بالطلب</span>
         </div>
+        <div class="flex flex-wrap gap-2 text-sm">
+          <!-- أزرار التنقل المرتبطة بالأقسام -->
+          <a href="#slide1" class="nav-btn px-3 py-2 rounded-lg">المدخل</a>
+          <a href="#slide2" class="nav-btn px-3 py-2 rounded-lg">الأهمية</a>
+          <a href="#slide3" class="nav-btn px-3 py-2 rounded-lg">المستويات</a>
+          <a href="#slide4" class="nav-btn px-3 py-2 rounded-lg">الأساليب</a>
+          <a href="#slide5" class="nav-btn px-3 py-2 rounded-lg">العوامل</a>
+          <a href="#slide6" class="nav-btn px-3 py-2 rounded-lg">التطبيقات</a>
+          <a href="#slide7" class="nav-btn px-3 py-2 rounded-lg">الحديثة</a>
+          <a href="#slide8" class="nav-btn px-3 py-2 rounded-lg">الخاتمة</a>
+        </div>
+        <button id="toggleDark" class="chip !py-2"><i class="fa-solid fa-moon"></i> وضع داكن</button>
+      </div>
     </nav>
 
-    <main class="pt-24 md:pt-28">
-        <div class="container-bg mx-auto px-4 py-8 rounded-lg shadow-xl">
-
-            <!-- الشريحة 1: المدخل إلى التنبؤ بالطلب -->
-            <div id="slide1" class="slide active p-8 slide-content">
-                <div class="section-title">1. المدخل إلى التنبؤ بالطلب</div>
-                <div class="info-card">
-                    <h2 class="text-[#f39c12]">تعريف التنبؤ بالطلب</h2>
-                    <div class="list-item">
-                        <i class="fas fa-chart-line"></i>
-                        <p class="text-lg leading-relaxed">
-                            هو عملية تقدير كمية المنتجات أو الخدمات التي يتوقع أن يطلبها العملاء في المستقبل. هذا التقدير لا يكون عشوائيًا، بل يعتمد على تحليل بيانات سابقة (مثل حجم المبيعات في السنوات الماضية)، وظروف حالية (مثل الاتجاهات الاقتصادية أو مواسم الأعياد). التنبؤ يساعد المؤسسات على رؤية المستقبل بشكل أوضح، والتخطيط له بوعي.
-                        </p>
-                    </div>
-                    <h2 class="mt-8 text-[#f39c12]">العلاقة بالمخزون والمخازن</h2>
-                    <div class="list-item">
-                        <i class="fas fa-warehouse"></i>
-                        <p class="text-lg leading-relaxed">
-                            المخزون هو العمود الفقري لأي مؤسسة إنتاجية أو تجارية، والتنبؤ هو العقل الذي يوجهه. إذا لم يكن هناك توقع صحيح للطلب، قد نجد المخازن ممتلئة ببضائع راكدة أو فارغة من منتجات يحتاجها العملاء. فالتنبؤ يحدد “ماذا نخزن؟ وبأي كمية؟ ومتى نطلب؟”.
-                        </p>
-                    </div>
-                    <h2 class="mt-8 text-[#f39c12]">الأهمية</h2>
-                    <div class="list-item">
-                        <i class="fas fa-dollar-sign"></i>
-                        <p class="text-lg leading-relaxed">
-                            بدون وجود تنبؤ مدروس، ستواجه الشركات خطر الخسائر: من جانب، الهدر الناتج عن فائض المخزون وتكاليف التخزين؛ ومن جانب آخر، فقدان العملاء عند نفاد المنتجات. التنبؤ هو وسيلة لحماية المنظمة من هذين الخطرين.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- الشريحة 2: أهمية التنبؤ بالطلب لإدارة المخزون -->
-            <div id="slide2" class="slide p-8 slide-content">
-                <div class="section-title">2. أهمية التنبؤ بالطلب لإدارة المخزون</div>
-                <div class="info-card">
-                    <h2 class="text-[#f39c12]">خفض التكاليف</h2>
-                    <div class="list-item">
-                        <i class="fas fa-tag"></i>
-                        <p class="text-lg leading-relaxed">
-                            عندما تعرف المؤسسة الكمية المتوقعة من الطلب بدقة، فإنها لا تضطر إلى شراء كميات مبالغ فيها، وبالتالي تقل تكاليف التخزين، والتأمين، وحتى التلف للمنتجات سريعة الانتهاء.
-                        </p>
-                    </div>
-                    <h2 class="mt-8 text-[#f39c12]">تحسين رضا العملاء</h2>
-                    <div class="list-item">
-                        <i class="fas fa-smile"></i>
-                        <p class="text-lg leading-relaxed">
-                            العميل يريد المنتج جاهزًا عند حاجته. وجود مخزون مبني على تنبؤ صحيح يجعل الشركة قادرة على تلبية الطلب فورًا، مما يزيد من ثقة العملاء وولائهم.
-                        </p>
-                    </div>
-                    <h2 class="mt-8 text-[#f39c12]">دعم قرارات الشراء والإنتاج</h2>
-                    <div class="list-item">
-                        <i class="fas fa-truck"></i>
-                        <p class="text-lg leading-relaxed">
-                            التنبؤ يحدد مواعيد وأحجام الشراء من الموردين بدقة، ويضبط خطط الإنتاج بحيث لا يكون هناك توقف مفاجئ أو فائض غير مبرر.
-                        </p>
-                    </div>
-                    <h2 class="mt-8 text-[#f39c12]">تحسين استخدام الموارد</h2>
-                    <div class="list-item">
-                        <i class="fas fa-cogs"></i>
-                        <p class="text-lg leading-relaxed">
-                            عندما تكون الكميات المطلوبة واضحة، يصبح استخدام الموارد المالية والبشرية واللوجستية أكثر كفاءة، فلا توجد طاقة معطلة أو نفقات غير ضرورية.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- الشريحة 3: مستويات التنبؤ -->
-            <div id="slide3" class="slide p-8 slide-content">
-                <div class="section-title">3. مستويات التنبؤ</div>
-                <div class="info-card">
-                    <h2 class="text-[#f39c12]">قصير الأجل</h2>
-                    <div class="list-item">
-                        <i class="fas fa-clock"></i>
-                        <p class="text-lg leading-relaxed">
-                            يغطي أيامًا أو أسابيع، وهو مفيد لإدارة العمليات اليومية. مثل مطعم يتوقع عدد الوجبات اليومية أو سوبرماركت يحدد كمية الخبز المطلوب يوميًا. هذا النوع من التنبؤ يساعد على التعامل مع تقلبات الطلب السريعة.
-                        </p>
-                    </div>
-                    <h2 class="mt-8 text-[#f39c12]">متوسط الأجل</h2>
-                    <div class="list-item">
-                        <i class="fas fa-calendar-alt"></i>
-                        <p class="text-lg leading-relaxed">
-                            يغطي فترة تمتد لعدة أشهر، مثل الشركات التي تخطط لمبيعات الملابس في موسم الشتاء أو المنتجات المدرسية في بداية العام الدراسي. هذا النوع ضروري للمنتجات الموسمية أو الحملات الترويجية.
-                        </p>
-                    </div>
-                    <h2 class="mt-8 text-[#f39c12]">طويل الأجل</h2>
-                    <div class="list-item">
-                        <i class="fas fa-calendar-check"></i>
-                        <p class="text-lg leading-relaxed">
-                            يمتد لسنوات، ويُستخدم في الصناعات التي تحتاج استثمارات ضخمة وتخطيط بعيد المدى، مثل شركات الطيران، الطاقة، أو صناعة السيارات. هذا المستوى يساعد على التخطيط الاستراتيجي وتوسعة خطوط الإنتاج.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- الشريحة 4: أساليب التنبؤ بالطلب -->
-            <div id="slide4" class="slide p-8 slide-content">
-                <div class="section-title">4. أساليب التنبؤ بالطلب</div>
-                <div class="info-card">
-                    <h2 class="text-[#f39c12]">الطرق النوعية</h2>
-                    <div class="list-item">
-                        <i class="fas fa-user-tie"></i>
-                        <p class="text-lg leading-relaxed">
-                            تعتمد على آراء الخبراء، الاستبيانات، ودراسات السوق. مثال: عند إطلاق منتج جديد لا توجد بيانات تاريخية، لذا يُستعان بآراء خبراء السوق لتقدير حجم الطلب. ميزتها أنها مفيدة في بيئات غير مستقرة، لكنها تفتقر للدقة الإحصائية.
-                        </p>
-                    </div>
-                    <h2 class="mt-8 text-[#f39c12]">الطرق الكمية</h2>
-                    <div class="list-item">
-                        <i class="fas fa-calculator"></i>
-                        <p class="text-lg leading-relaxed">
-                            تعتمد على الرياضيات والإحصاء لتحليل البيانات السابقة والتنبؤ بالمستقبل. من أهم أدواتها: المتوسطات المتحركة، السلاسل الزمنية، والانحدار (Regression).
-                        </p>
-                    </div>
-                    <h2 class="mt-8 text-[#f39c12]">المقارنة بين الطريقتين</h2>
-                    <div class="list-item">
-                        <i class="fas fa-balance-scale"></i>
-                        <p class="text-lg leading-relaxed">
-                            النوعية مناسبة عندما لا توجد بيانات كافية، والكمية مناسبة عندما تتوفر بيانات دقيقة. غالبًا الشركات الناجحة تمزج بينهما لتحقيق تنبؤ أكثر واقعية.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- الشريحة 5: العوامل المؤثرة على دقة التنبؤ -->
-            <div id="slide5" class="slide p-8 slide-content">
-                <div class="section-title">5. العوامل المؤثرة على دقة التنبؤ</div>
-                <div class="info-card">
-                    <h2 class="text-[#f39c12]">الموسمية والاتجاهات</h2>
-                    <div class="list-item">
-                        <i class="fas fa-chart-bar"></i>
-                        <p class="text-lg leading-relaxed">
-                            بعض المنتجات يرتفع الطلب عليها في أوقات محددة (مثل التمور في رمضان أو الملابس الشتوية في ديسمبر). معرفة هذه الأنماط الموسمية يساعد على تحسين دقة التنبؤ.
-                        </p>
-                    </div>
-                    <h2 class="mt-8 text-[#f39c12]">جودة البيانات</h2>
-                    <div class="list-item">
-                        <i class="fas fa-database"></i>
-                        <p class="text-lg leading-relaxed">
-                            التنبؤ يعتمد على البيانات، فإذا كانت ناقصة أو غير صحيحة فستكون النتائج مضللة. لذلك من المهم بناء نظام قوي لتجميع وتحليل البيانات.
-                        </p>
-                    </div>
-                    <h2 class="mt-8 text-[#f39c12]">الأحداث غير المتوقعة</h2>
-                    <div class="list-item">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <p class="text-lg leading-relaxed">
-                            مثل جائحة كورونا التي قلبت سلوك المستهلكين رأسًا على عقب، أو الأزمات الاقتصادية المفاجئة. هذه الأحداث تجعل التنبؤ صعبًا وتفرض تعديلات سريعة.
-                        </p>
-                    </div>
-                    <h2 class="mt-8 text-[#f39c12]">ديناميكية السوق</h2>
-                    <div class="list-item">
-                        <i class="fas fa-bullseye"></i>
-                        <p class="text-lg leading-relaxed">
-                            سلوك العملاء يتغير بسرعة بسبب الحملات التسويقية أو دخول منافسين جدد. التنبؤ يجب أن يكون مرنًا ليستجيب لهذه التغيرات.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- الشريحة 6: تطبيقات التنبؤ بالطلب في المخزون والمخازن -->
-            <div id="slide6" class="slide p-8 slide-content">
-                <div class="section-title">6. تطبيقات التنبؤ بالطلب في المخزون والمخازن</div>
-                <div class="info-card">
-                    <h2 class="text-[#f39c12]">تحديد نقطة إعادة الطلب</h2>
-                    <div class="list-item">
-                        <i class="fas fa-undo"></i>
-                        <p class="text-lg leading-relaxed">
-                            عند وصول المخزون إلى مستوى معين، يتم إصدار طلب جديد قبل نفاده لتجنب انقطاع التوريد.
-                        </p>
-                    </div>
-                    <h2 class="mt-8 text-[#f39c12]">الكمية الاقتصادية للطلب (EOQ)</h2>
-                    <div class="list-item">
-                        <i class="fas fa-balance-scale"></i>
-                        <p class="text-lg leading-relaxed">
-                            معادلة تحدد الكمية المثالية التي تقلل تكاليف الطلب والتخزين معًا. إذا طلبت كمية صغيرة جدًا ستدفع تكاليف طلبات كثيرة، وإذا طلبت كمية كبيرة جدًا ستتحمل تكاليف تخزين عالية. EOQ يوازن بين الاثنين.
-                        </p>
-                    </div>
-                    <h2 class="mt-8 text-[#f39c12]">تقليل التكاليف والهدر</h2>
-                    <div class="list-item">
-                        <i class="fas fa-trash-alt"></i>
-                        <p class="text-lg leading-relaxed">
-                            التنبؤ الدقيق يمنع تكدس منتجات غير ضرورية أو نقص المنتجات المطلوبة.
-                        </p>
-                    </div>
-                    <h2 class="mt-8 text-[#f39c12]">دعم سلسلة الإمداد</h2>
-                    <div class="list-item">
-                        <i class="fas fa-shipping-fast"></i>
-                        <p class="text-lg leading-relaxed">
-                            المخازن جزء من سلسلة أكبر تبدأ بالمورد وتنتهي بالعميل. التنبؤ يضمن انسيابية السلسلة وعدم وجود فجوات أو تعطلات.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- الشريحة 7: التوجهات الحديثة والتحديات -->
-            <div id="slide7" class="slide p-8 slide-content">
-                <div class="section-title">7. التوجهات الحديثة والتحديات</div>
-                <div class="info-card">
-                    <h2 class="text-[#f39c12]">الذكاء الاصطناعي والتعلم الآلي</h2>
-                    <div class="list-item">
-                        <i class="fas fa-robot"></i>
-                        <p class="text-lg leading-relaxed">
-                            برامج حديثة قادرة على تحليل ملايين البيانات لحظيًا والتنبؤ بسلوك المستهلك بشكل أدق، مثل أنظمة التوصية في أمازون.
-                        </p>
-                    </div>
-                    <h2 class="mt-8 text-[#f39c12]">البيانات الضخمة (Big Data)</h2>
-                    <div class="list-item">
-                        <i class="fas fa-server"></i>
-                        <p class="text-lg leading-relaxed">
-                            الشركات تجمع الآن بيانات من وسائل التواصل، أنماط الشراء الإلكترونية، وحتى الطقس لتوقع الطلب.
-                        </p>
-                    </div>
-                    <h2 class="mt-8 text-[#f39c12]">التحديات</h2>
-                    <div class="list-item">
-                        <i class="fas fa-exclamation-circle"></i>
-                        <p class="text-lg leading-relaxed">
-                            ارتفاع تكاليف أنظمة التنبؤ الحديثة. صعوبة تحقيق دقة عالية في الأسواق المتقلبة. اعتماد الشركات أحيانًا على بيانات ناقصة أو متأخرة.
-                        </p>
-                    </div>
-                    <h2 class="mt-8 text-[#f39c12]">المستقبل المتوقع</h2>
-                    <div class="list-item">
-                        <i class="fas fa-chart-pie"></i>
-                        <p class="text-lg leading-relaxed">
-                            الاتجاه هو مزج بين قوة التكنولوجيا (الذكاء الاصطناعي والتحليلات الضخمة) وبين خبرة الإنسان في قراءة السياق وفهم الثقافة المحلية.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- الشريحة 8: الخاتمة -->
-            <div id="slide8" class="slide p-8 slide-content">
-                <div class="min-h-[60vh] flex flex-col justify-center items-center text-center">
-                    <h2 class="text-4xl md:text-5xl font-extrabold text-[#2980b9] mb-4">الخاتمة</h2>
-                    <div class="info-card">
-                        <p class="text-xl leading-relaxed">
-                            التنبؤ بالطلب هو القلب النابض لإدارة المخزون الحديثة. بدونه، تصبح المؤسسات عمياء أمام المستقبل، معرضة لخطر فقدان العملاء أو تحمل تكاليف تخزين مرهقة. ومع أنه لا يمكن أن يكون دقيقًا بنسبة 100%، إلا أنه يقلل الأخطاء ويزيد من كفاءة العمليات بشكل كبير. المستقبل سيشهد دورًا متزايدًا للتقنيات الحديثة مثل الذكاء الاصطناعي والبيانات الضخمة، لكن الخبرة البشرية ستبقى عنصرًا حاسمًا في توجيه القرارات. الجمع بين التحليل العلمي والحدس الإداري هو ما يصنع إدارة مخزون ناجحة قادرة على مواجهة تقلبات السوق وتحقيق رضا العملاء.
-                        </p>
-                    </div>
-                    <h3 class="mt-8 text-2xl font-bold text-[#f39c12]">شكراً لحسن استماعكم</h3>
-                </div>
-            </div>
+    <div class="max-w-6xl mx-auto px-4 py-14 md:py-24">
+      <div class="glass p-6 md:p-10">
+        <h1 class="text-3xl md:text-5xl font-extrabold leading-tight">عرض متقدم: <span class="text-yellow-300">التنبؤ بالطلب</span> لإدارة المخزون</h1>
+        <p class="mt-4 text-white/90 text-lg md:text-xl">
+          نظرة عملية ممتعة ومُحكمة تربط المفاهيم بالقرارات التشغيلية والنتائج المالية.
+        </p>
+        <div class="mt-5 flex flex-wrap gap-2 text-sm">
+          <span class="chip"><i class="fa-solid fa-bolt"></i> Scrollspy</span>
+          <span class="chip"><i class="fa-solid fa-wand-magic-sparkles"></i> Glass UI</span>
+          <span class="chip"><i class="fa-solid fa-circle-half-stroke"></i> Dark Mode</span>
         </div>
-    </main>
+      </div>
+    </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const navTabs = document.querySelectorAll('.nav-tab');
-            const slides = document.querySelectorAll('.slide');
+    <!-- موجة زخرفية -->
+    <div class="wave" aria-hidden="true">
+      <svg viewBox="0 0 1440 120" preserveAspectRatio="none" class="w-full h-[80px] text-[#f1f5f9] dark:text-[#0b1220]">
+        <path fill="currentColor" d="M0,64L48,53.3C96,43,192,21,288,42.7C384,64,480,128,576,154.7C672,181,768,171,864,138.7C960,107,1056,53,1152,48C1248,43,1344,85,1392,106.7L1440,128L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"/>
+      </svg>
+    </div>
+  </header>
 
-            function showSlide(targetId) {
-                slides.forEach(slide => {
-                    slide.classList.remove('active');
-                });
-                const targetSlide = document.getElementById(targetId);
-                if (targetSlide) {
-                    targetSlide.classList.add('active');
-                }
-            }
+  <!-- المحتوى -->
+  <main class="max-w-6xl mx-auto px-4 pb-24 space-y-16">
 
-            function activateTab(targetId) {
-                navTabs.forEach(tab => {
-                    tab.classList.remove('tab-active');
-                    if (tab.getAttribute('data-target') === targetId) {
-                        tab.classList.add('tab-active');
-                    }
-                });
-            }
+    <!-- قالب قسم -->
+    <section id="slide1" class="scroll-mt-28">
+      <h2 class="sect-title">1) المدخل إلى التنبؤ بالطلب</h2>
+      <div class="grid md:grid-cols-2 gap-6 mt-6">
+        <div class="glass p-6">
+          <h3 class="text-xl font-extrabold text-[var(--pri)] mb-3"><i class="fa-solid fa-circle-info mr-2"></i> التعريف</h3>
+          <p class="leading-8 text-slate-700 dark:text-slate-200">
+            هو تقدير كميات المنتجات/الخدمات المتوقعة مستقبلًا بالاعتماد على بيانات تاريخية وسياق لحظي (مواسم، اقتصاد، منافسة). الغاية: تحويل الضباب إلى أرقام قابلة للتنفيذ.
+          </p>
+          <div class="mt-4 li"><i class="fa-solid fa-lightbulb"></i>
+            <p><b>فكرة موجّهة:</b> التنبؤ ليس «تخمينًا ذكيًا» بل عملية منهجية تقلّل مساحة الصدفة في قرار الشراء والإنتاج والتوزيع.</p>
+          </div>
+        </div>
+        <div class="glass p-6">
+          <h3 class="text-xl font-extrabold text-[var(--pri)] mb-3"><i class="fa-solid fa-warehouse mr-2"></i> علاقته بالمخزون</h3>
+          <ul class="space-y-3">
+            <li class="li"><i class="fa-solid fa-boxes-stacked"></i><span>يجيب عن: ماذا نخزّن؟ كم نخزّن؟ ومتى نعيد الطلب؟</span></li>
+            <li class="li"><i class="fa-solid fa-scale-balanced"></i><span>يوازن بين <b>نقص المخزون</b> (فقدان مبيعات) و<b>فائضه</b> (تكاليف وحجز رأس مال).</span></li>
+            <li class="li"><i class="fa-solid fa-sitemap"></i><span>يربط قرارات الشراء والإنتاج والنقل ضمن سلسلة إمداد واحدة.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-            navTabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const targetId = tab.getAttribute('data-target');
-                    showSlide(targetId);
-                    activateTab(targetId);
-                });
-            });
+    <section id="slide2" class="scroll-mt-28">
+      <h2 class="sect-title">2) الأهمية العملية</h2>
+      <div class="grid md:grid-cols-3 gap-6 mt-6">
+        <div class="glass p-6">
+          <h3 class="font-bold text-[var(--pri)] mb-2"><i class="fa-solid fa-tag mr-2"></i> خفض التكاليف</h3>
+          <p class="text-slate-700 dark:text-slate-200">تقليل التخزين الزائد، التلف، ورسوم التأمين والمساحات. كل نقطة دقة تُترجم إلى ريال محفوظ.</p>
+        </div>
+        <div class="glass p-6">
+          <h3 class="font-bold text-[var(--pri)] mb-2"><i class="fa-solid fa-face-smile mr-2"></i> رفع رضا العملاء</h3>
+          <p>توافر المنتج في الوقت الصحيح يعني ولاء وسمعة أعلى ومعدل نفاد أقل.</p>
+        </div>
+        <div class="glass p-6">
+          <h3 class="font-bold text-[var(--pri)] mb-2"><i class="fa-solid fa-truck-ramp-box mr-2"></i> قرارات شراء/إنتاج أذكى</h3>
+          <p>توقيت الطلبات، تحميل خطوط الإنتاج، وجدولة العمالة بناءً على رؤية رقمية لا حدس.</p>
+        </div>
+      </div>
+    </section>
 
-            // Show the first slide and activate its tab on page load
-            showSlide('slide1');
-            activateTab('slide1');
-        });
-    </script>
+    <section id="slide3" class="scroll-mt-28">
+      <h2 class="sect-title">3) مستويات التنبؤ</h2>
+      <div class="grid md:grid-cols-3 gap-6 mt-6">
+        <div class="glass p-6">
+          <h3 class="font-extrabold text-[var(--pri)] mb-2"><i class="fa-solid fa-clock mr-2"></i> قصير الأجل</h3>
+          <p>أيام–أسابيع: إدارة الطلب اليومي (مخبز، صيدلية، بقالة). حساس للعروض والطقس والأحداث.</p>
+        </div>
+        <div class="glass p-6">
+          <h3 class="font-extrabold text-[var(--pri)] mb-2"><i class="fa-solid fa-calendar-days mr-2"></i> متوسط الأجل</h3>
+          <p>أشهر: مواسم مدرسة/شتاء/رمضان، حملات تسويقية، إدارة المخزون الموسمي.</p>
+        </div>
+        <div class="glass p-6">
+          <h3 class="font-extrabold text-[var(--pri)] mb-2"><i class="fa-solid fa-calendar-check mr-2"></i> طويل الأجل</h3>
+          <p>سنوات: توسعات رأسمالية، سعات إنتاجية، أساطيل نقل، وتخطيط مواقع المخازن.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="slide4" class="scroll-mt-28">
+      <h2 class="sect-title">4) أساليب التنبؤ</h2>
+      <div class="grid md:grid-cols-2 gap-6 mt-6">
+        <div class="glass p-6">
+          <h3 class="text-xl font-extrabold text-[var(--pri)] mb-2"><i class="fa-solid fa-user-tie mr-2"></i> نوعية (خبراء وسوق)</h3>
+          <ul class="space-y-3">
+            <li class="li"><i class="fa-solid fa-comments"></i><span>مفيدة عند غياب البيانات (منتج جديد).</span></li>
+            <li class="li"><i class="fa-solid fa-people-group"></i><span>طرق: لجنة خبراء، دلفي، مجموعات تركيز، استطلاعات.</span></li>
+            <li class="li"><i class="fa-solid fa-circle-exclamation"></i><span>خطر التحيّز؛ تُستخدم كمدخل يُدمج لاحقًا مع الكمي.</span></li>
+          </ul>
+        </div>
+        <div class="glass p-6">
+          <h3 class="text-xl font-extrabold text-[var(--pri)] mb-2"><i class="fa-solid fa-calculator mr-2"></i> كمية (إحصاء ورياضيات)</h3>
+          <ul class="space-y-3">
+            <li class="li"><i class="fa-solid fa-wave-square"></i><span>متوسطات متحركة، تنعيم أسي، تفكيك موسمية/اتجاه.</span></li>
+            <li class="li"><i class="fa-solid fa-chart-line"></i><span>انحدار خطي/متعدد لتفسير الطلب بمحركات (سعر، إعلان…).</span></li>
+            <li class="li"><i class="fa-solid fa-flask-vial"></i><span>نماذج ML حديثة عندما تتوفر بيانات كبيرة ومتغيرات كثيرة.</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="glass p-6 mt-6">
+        <h3 class="text-lg font-bold text-[var(--pri)] mb-2"><i class="fa-solid fa-scale-balanced mr-2"></i> المزج الذكي</h3>
+        <p>الأفضل عمليًا: <b>Blend</b> بين النوعي والكمّي؛ نبدأ برؤية السوق ثم نُكبْر الإشارة رقمياً ونقيّم بدقة أخطاء التنبؤ (MAE/MAPE).</p>
+      </div>
+    </section>
+
+    <section id="slide5" class="scroll-mt-28">
+      <h2 class="sect-title">5) العوامل المؤثرة على الدقة</h2>
+      <div class="grid md:grid-cols-2 gap-6 mt-6">
+        <div class="glass p-6">
+          <ul class="space-y-3">
+            <li class="li"><i class="fa-solid fa-snowflake"></i><span><b>الموسمية والاتجاه:</b> قمم رمضان/الأعياد/الشتاء – يجب نمذجتها لا حذفها.</span></li>
+            <li class="li"><i class="fa-solid fa-database"></i><span><b>جودة البيانات:</b> نظافة، اكتمال، وتوقيت. بيانات متأخرة = قرارات متأخرة.</span></li>
+            <li class="li"><i class="fa-solid fa-triangle-exclamation"></i><span><b>الصدمات:</b> أوبئة، كوارث، تغيّر تنظيمات – تتطلب سيناريوهات بديلة.</span></li>
+            <li class="li"><i class="fa-solid fa-bullseye"></i><span><b>ديناميكية السوق:</b> منافسون جدد، أسعار، تفضيلات – نموذج مرن وحدّث مستمر.</span></li>
+          </ul>
+        </div>
+        <div class="glass p-6">
+          <h3 class="font-bold text-[var(--pri)] mb-2"><i class="fa-solid fa-ruler-combined mr-2"></i> قياس الخطأ</h3>
+          <p>تابعي مؤشرات مثل: MAE, RMSE, <b>MAPE</b>. الهدف ليس صفر خطأ، بل <b>خطأ متناقص ومستقر</b> يدعم قرار الشراء والإنتاج.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="slide6" class="scroll-mt-28">
+      <h2 class="sect-title">6) تطبيقات مباشرة في المخزون</h2>
+      <div class="grid md:grid-cols-2 gap-6 mt-6">
+        <div class="glass p-6">
+          <h3 class="font-extrabold text-[var(--pri)] mb-2"><i class="fa-solid fa-rotate mr-2"></i> نقطة إعادة الطلب (ROP)</h3>
+          <p>إطلاق طلبية جديدة عند بلوغ حدّ آمن يأخذ في الحسبان <b>مدة التوريد</b> وتذبذب الطلب.</p>
+        </div>
+        <div class="glass p-6">
+          <h3 class="font-extrabold text-[var(--pri)] mb-2"><i class="fa-solid fa-balance-scale mr-2"></i> الكمية الاقتصادية (EOQ)</h3>
+          <p>موازنة تكاليف الطلب والتخزين لاختيار حجم الطلبية المثالي. التنبؤ الدقيق يُغذي الحسابات ويمنع التطرف.</p>
+        </div>
+        <div class="glass p-6">
+          <h3 class="font-extrabold text-[var(--pri)] mb-2"><i class="fa-solid fa-recycle mr-2"></i> تقليل الهدر</h3>
+          <p>خفض الراجعات، التلف، والمنتجات البطيئة عبر رؤية مبكرة للطلب الحقيقي.</p>
+        </div>
+        <div class="glass p-6">
+          <h3 class="font-extrabold text-[var(--pri)] mb-2"><i class="fa-solid fa-truck-fast mr-2"></i> دعم سلسلة الإمداد</h3>
+          <p>مزامنة الجداول مع المورّدين والناقلين لتقليل زمن الدورة ورفع مستوى الخدمة.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="slide7" class="scroll-mt-28">
+      <h2 class="sect-title">7) التوجهات الحديثة والتحديات</h2>
+      <div class="grid md:grid-cols-2 gap-6 mt-6">
+        <div class="glass p-6">
+          <h3 class="font-extrabold text-[var(--pri)] mb-2"><i class="fa-solid fa-robot mr-2"></i> الذكاء الاصطناعي & البيانات الضخمة</h3>
+          <p>نماذج تتعلم من سلاسل زمنية متعددة، إشارات الطقس، الويب، نقاط البيع، ووسائل التواصل—تتنبأ بدقة زمنية أدق.</p>
+        </div>
+        <div class="glass p-6">
+          <h3 class="font-extrabold text-[var(--pri)] mb-2"><i class="fa-solid fa-circle-exclamation mr-2"></i> تحديات</h3>
+          <p>تكلفة النظم، تعقيد البيانات، وحوكمة الخصوصية. الحل: بناء تدريجي، مؤشرات وضوح (Explainability)، وفِرق هجينة.</p>
+        </div>
+      </div>
+      <div class="glass p-6 mt-6">
+        <h3 class="font-bold text-[var(--pri)] mb-2"><i class="fa-solid fa-forward mr-2"></i> المستقبل</h3>
+        <p>المزج بين قوة الخوارزميات وخبرة الإنسان في قراءة السياق المحلي هو الطريق الذهبي لقرارات أكثر رشاقة وموثوقية.</p>
+      </div>
+    </section>
+
+    <section id="slide8" class="scroll-mt-28">
+      <h2 class="sect-title">الخاتمة</h2>
+      <div class="glass p-8 mt-6 text-center">
+        <p class="text-lg leading-8">
+          التنبؤ بالطلب هو العصب الحساس لإدارة المخزون الحديثة. ليست الغاية الكمال، بل
+          <b>تقليل اللايقين</b> وتحويله إلى قرارات ذكية قابلة للتنفيذ. حين تتجاور
+          الأرقام مع الفهم البشري للسياق، تُصنع الكفاءة وتُصان الثقة.
+        </p>
+        <div class="mt-6">
+          <a href="#slide1" class="chip"><i class="fa-solid fa-arrow-rotate-right"></i> رجوع للبداية</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- زر أعلى -->
+  <button id="backTop" class="chip !fixed"><i class="fa-solid fa-arrow-up"></i> أعلى</button>
+
+  <footer class="text-center py-10 text-sm text-slate-500 dark:text-slate-400">
+    تم التصميم بأسلوب بسيط/أنيق – صفحة واحدة، جاهزة للنشر على GitHub Pages أو Netlify.
+  </footer>
+
+  <script>
+    // تفعيل الوضع الداكن
+    const toggleDark = document.getElementById('toggleDark');
+    toggleDark.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+    });
+
+    // Scrollspy + تنشيط الأزرار
+    const navBtns = [...document.querySelectorAll('.nav-btn')];
+    const sections = [...document.querySelectorAll('main section')];
+
+    function setActiveByHash(){
+      const hash = decodeURIComponent(location.hash || '#slide1');
+      navBtns.forEach(b => b.classList.toggle('active', b.getAttribute('href') === hash));
+    }
+    setActiveByHash();
+    window.addEventListener('hashchange', setActiveByHash);
+
+    // IntersectionObserver لتفعيل الزر عند المرور على القسم
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          const id = '#'+e.target.id;
+          navBtns.forEach(b => b.classList.toggle('active', b.getAttribute('href') === id));
+          history.replaceState(null,'', id);
+        }
+      });
+    }, {rootMargin:'-50% 0px -45% 0px', threshold:0});
+    sections.forEach(s=>obs.observe(s));
+
+    // شريط التقدّم
+    const progress = document.getElementById('progress');
+    window.addEventListener('scroll', () => {
+      const h = document.documentElement;
+      const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+      progress.style.width = scrolled + '%';
+
+      // زر أعلى
+      document.getElementById('backTop').style.display = h.scrollTop > 600 ? 'block' : 'none';
+    });
+
+    // زر أعلى
+    document.getElementById('backTop').onclick = () => window.scrollTo({top:0, behavior:'smooth'});
+
+    // تنقّل لوحة المفاتيح بين الأقسام (← →)
+    document.addEventListener('keydown', (e)=>{
+      if(['ArrowLeft','ArrowRight'].includes(e.key)){
+        const ids = sections.map(s=>s.id);
+        const current = location.hash ? location.hash.substring(1) : ids[0];
+        const idx = ids.indexOf(current);
+        const next = e.key==='ArrowRight' ? Math.min(idx+1, ids.length-1) : Math.max(idx-1, 0);
+        location.hash = '#'+ids[next];
+      }
+    });
+
+    // افتح على القسم حسب الهاش عند التحميل
+    window.addEventListener('DOMContentLoaded', ()=>{
+      if(location.hash){ document.querySelector(location.hash)?.scrollIntoView({behavior:'smooth'}); }
+    });
+  </script>
 </body>
 </html>
