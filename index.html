@@ -1,468 +1,463 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>التنبؤ بالطلب | عرض فخم</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>التنبؤ بالطلب | عرض فاخر</title>
 
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
-  <!-- خطوط عربية فخمة: العناوين (Noto Naskh Arabic) والنص (Cairo) -->
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Noto+Naskh+Arabic:wght@600;700;800&display=swap" rel="stylesheet">
+  <!-- خطوط -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800;900&family=Noto+Naskh+Arabic:wght@700;800&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --ink:#0f172a;          /* كحلي عميق */
-      --bg:#0b1220;           /* لليل الداكن */
-      --gold:#d4af37;         /* ذهبي فاخر */
-      --gold-2:#f1c453;
-      --blue:#1d4ed8;         /* أزرق ملكي */
-      --glass: rgba(255,255,255,.75);
-      --glass-dark: rgba(15,23,42,.55);
-      --card-br: 18px;
-      --shadow: 0 14px 48px rgba(2,6,23,.18);
+      --gold:#d4af37;      /* ذهبي فاخر */
+      --gold2:#f1c453;
+      --blue:#1d4ed8;      /* أزرق ملكي */
+      --ink:#0f172a;       /* كحلي عميق */
     }
     html,body{scroll-behavior:smooth}
     body{
       font-family:'Cairo', system-ui, -apple-system, "Segoe UI", Roboto, Arial;
       color:var(--ink);
       background:
-        radial-gradient(1200px 500px at 70% -10%, rgba(212,175,55,.15), transparent),
-        linear-gradient(180deg, #eef2ff 0%, #f8fafc 50%, #eef2ff 100%);
-    }
-    .dark body{color:#e5e7eb; background: linear-gradient(180deg,#0b1220 0%,#0b1220 100%)}
-    .hero{
-      background:
-        radial-gradient(1000px 400px at 40% -10%, rgba(241,196,83,.18), transparent),
+        radial-gradient(1100px 420px at 35% -10%, rgba(212,175,55,.18), transparent),
         linear-gradient(135deg, #0ea5e9 0%, #2563eb 40%, #1d4ed8 100%);
-      color:white;
-      position:relative;
+      min-height:100vh;
     }
-    .glass{
-      background: var(--glass);
-      -webkit-backdrop-filter: blur(12px);
-              backdrop-filter: blur(12px);
-      border-radius: var(--card-br);
+    /* كارت زجاجي داكن أوضح */
+    .hero-card{
+      background: rgba(15,23,42,.72); /* أغمق بوضوح */
+      color:#fff;
       border:1px solid rgba(255,255,255,.35);
-      box-shadow: var(--shadow);
+      -webkit-backdrop-filter: blur(10px);
+              backdrop-filter: blur(10px);
+      border-radius:20px;
+      box-shadow:0 16px 48px rgba(2,6,23,.35);
     }
-    .dark .glass{
-      background: var(--glass-dark);
-      border-color: rgba(148,163,184,.18);
-    }
-    .title-font{font-family:'Noto Naskh Arabic', serif}
     .chip{
-      background: white; color:#1f2937; border:1px solid rgba(31,41,55,.15);
-      border-radius:999px; padding:.35rem .9rem; display:inline-flex; gap:.5rem; align-items:center; font-weight:800
+      background:#fff;color:#1f2937;border-radius:999px;
+      padding:.35rem .85rem;border:1px solid rgba(31,41,55,.18);font-weight:800
     }
-    .dark .chip{background:#0f172a; color:#e5e7eb; border-color:#1f2a44}
-    .gold-line{
-      height:3px; background:linear-gradient(90deg, transparent, var(--gold), transparent); border-radius:3px
+    .topnav a{
+      color:#fff; opacity:.92; padding:.45rem .75rem; border-radius:.65rem; font-weight:800
     }
-    .sect-title{
-      font-family:'Noto Naskh Arabic', serif; font-weight:800; font-size:1.8rem;
-      color:#1d4ed8; border-bottom:4px solid var(--gold); display:inline-block; padding-bottom:.35rem
+    .topnav a.active, .topnav a:hover{
+      background:#ffffff; color:var(--blue); box-shadow:0 8px 22px rgba(255,255,255,.35)
     }
-    .nav-btn{--_bg:transparent; --_c:white; transition:.25s}
-    .nav-btn.active{--_bg:white; --_c:#1d4ed8; box-shadow:0 6px 18px rgba(255,255,255,.35)}
-    .nav-btn{background:var(--_bg); color:var(--_c)}
-    .li{display:flex; gap:.9rem}
-    .li i{color:#2563eb; margin-top:.3rem; min-width:1.1rem; text-align:center}
-    #progress{position:fixed; inset:0 auto auto 0; height:4px; width:0; z-index:60; background:linear-gradient(90deg, var(--gold), var(--gold-2))}
-    #backTop{position:fixed; right:1rem; bottom:1rem; display:none; z-index:55}
-    .wave svg{display:block}
+    /* نظام الصفحات (SPA) */
+    .page{ display:none; }
+    .page.active{ display:block; }
+    /* بطاقات المحتوى */
+    .card{
+      background:#fff; border:1px solid #e5e7eb; border-radius:18px;
+      box-shadow:0 14px 40px rgba(2,6,23,.08)
+    }
+    .h{
+      border-bottom:4px solid var(--gold); display:inline-block; padding-bottom:.3rem;
+      font-weight:900; color:var(--blue)
+    }
+    .li{display:flex; gap:.7rem}
+    .li i{color:var(--blue); margin-top:.35rem; min-width:1.1rem; text-align:center}
+    .btn{
+      display:inline-flex; gap:.6rem; align-items:center; background:var(--blue); color:#fff;
+      padding:.75rem 1rem; border-radius:12px; font-weight:900
+    }
+    /* شريط تقدّم أعلى */
+    #progress{position:fixed; inset:0 auto auto 0; height:4px; width:0; z-index:60;
+      background:linear-gradient(90deg, var(--gold), var(--gold2))}
+    /* فوتر فاتح */
+    footer{color:#eef2ff}
+    /* عنوان فخم */
+    .title-font{font-family:'Noto Naskh Arabic', serif}
+    /* وعاء عام */
+    .container-xx{max-width:1100px; margin:0 auto}
   </style>
 </head>
-<body class="dark:bg-[var(--bg)]">
+<body>
 
-  <!-- شريط تقدّم الصفحة -->
+  <!-- شريط التقدّم -->
   <div id="progress"></div>
 
-  <!-- غلاف فاخر -->
-  <header class="hero">
-    <nav class="sticky top-0 bg-transparent/25 backdrop-blur z-40">
-      <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center gap-2 justify-between">
-        <div class="flex items-center gap-3">
-          <span class="chip"><i class="fa-solid fa-chart-line text-[var(--gold)]"></i> التنبؤ بالطلب</span>
-        </div>
-        <div class="hidden md:flex flex-wrap gap-2 text-sm">
-          <a href="#cover"  class="nav-btn px-3 py-2 rounded-lg">الغلاف</a>
-          <a href="#s1" class="nav-btn px-3 py-2 rounded-lg">المدخل</a>
-          <a href="#s2" class="nav-btn px-3 py-2 rounded-lg">الأهمية</a>
-          <a href="#s3" class="nav-btn px-3 py-2 rounded-lg">المستويات</a>
-          <a href="#s4" class="nav-btn px-3 py-2 rounded-lg">الأساليب</a>
-          <a href="#s5" class="nav-btn px-3 py-2 rounded-lg">العوامل</a>
-          <a href="#s6" class="nav-btn px-3 py-2 rounded-lg">التطبيقات</a>
-          <a href="#s7" class="nav-btn px-3 py-2 rounded-lg">الحديثة</a>
-          <a href="#s8" class="nav-btn px-3 py-2 rounded-lg">الخاتمة</a>
-        </div>
-        <button id="toggleDark" class="chip !py-2"><i class="fa-solid fa-moon"></i> وضع داكن</button>
-      </div>
-    </nav>
-
-    <section id="cover" class="max-w-6xl mx-auto px-4 py-14 md:py-24">
-      <div class="grid md:grid-cols-5 gap-6 items-center">
-        <div class="md:col-span-3 glass p-8">
-          <h1 class="title-font text-4xl md:text-6xl font-extrabold leading-[1.15]">
-            <span class="text-yellow-300">التنبؤ بالطلب</span><br>
-            <span class="text-white/95">من الرؤية إلى التنفيذ</span>
-          </h1>
-          <div class="gold-line my-5"></div>
-          <p class="text-white/90 text-lg md:text-xl">رحلة فاخرة تربط العلم بالإدارة… أرقام تنطق، وقرارات تُصاغ على ضوء الدقة.</p>
-          <div class="mt-6 flex flex-wrap gap-3 text-sm">
-            <span class="chip"><i class="fa-solid fa-wand-magic-sparkles text-[var(--gold)]"></i> Glass UI</span>
-            <span class="chip"><i class="fa-solid fa-bolt text-[var(--gold)]"></i> Scrollspy</span>
-            <span class="chip"><i class="fa-solid fa-circle-half-stroke text-[var(--gold)]"></i> Dark Mode</span>
-          </div>
-          <a href="#s1" class="mt-8 inline-flex items-center gap-2 bg-white text-[#1d4ed8] font-extrabold px-6 py-3 rounded-xl hover:scale-[1.02] transition">
-            ابدأ العرض <i class="fa-solid fa-arrow-down"></i>
-          </a>
-        </div>
-        <div class="md:col-span-2 glass p-8 text-center">
-          <div class="text-2xl title-font font-extrabold text-yellow-300 mb-2">إعداد:</div>
-          <div class="title-font text-3xl font-extrabold text-white">عبدالعزيز</div>
-          <div class="mt-6 text-white/85">قسم: إدارة سلاسل الإمداد • المدرسة/القسم</div>
-        </div>
-      </div>
-    </section>
-
-    <div class="wave" aria-hidden="true">
-      <svg viewBox="0 0 1440 120" preserveAspectRatio="none" class="w-full h-[80px] text-[#f8fafc] dark:text-[var(--bg)]">
-        <path fill="currentColor" d="M0,64L48,53.3C96,43,192,21,288,42.7C384,64,480,128,576,154.7C672,181,768,171,864,138.7C960,107,1056,53,1152,48C1248,43,1344,85,1392,106.7L1440,128L1440,0L0,0Z"/>
-      </svg>
+  <!-- شريط علوي -->
+  <nav class="container-xx px-4 py-3 flex justify-between items-center">
+    <a href="#cover" class="chip"><i class="fa-solid fa-chart-line" style="color:var(--gold)"></i> التنبؤ بالطلب</a>
+    <div class="topnav hidden md:flex flex-wrap gap-2 text-sm">
+      <a href="#cover"        data-link>الغلاف</a>
+      <a href="#s1" data-link>المدخل</a>
+      <a href="#s2" data-link>الأهمية</a>
+      <a href="#s3" data-link>المستويات</a>
+      <a href="#s4" data-link>الأساليب</a>
+      <a href="#s5" data-link>العوامل</a>
+      <a href="#s6" data-link>التطبيقات</a>
+      <a href="#s7" data-link>الحديثة</a>
+      <a href="#s8" data-link>الخاتمة</a>
     </div>
-  </header>
+  </nav>
 
-  <main class="max-w-6xl mx-auto px-4 pb-24 space-y-16">
+  <!-- الغلاف -->
+  <section id="cover" class="page active">
+    <header class="container-xx px-4 py-12 md:py-20">
+      <div class="grid md:grid-cols-5 gap-6 items-center">
+        <div class="md:col-span-3 hero-card p-8 md:p-10">
+          <h1 class="title-font text-4xl md:text-6xl font-extrabold leading-[1.15]">
+            <span style="color:var(--gold)">التنبؤ بالطلب</span><br>
+            <span class="text-white/95">عرض متقدم لإدارة المخزون</span>
+          </h1>
+          <p class="mt-5 text-white/90 text-lg md:text-xl">
+            نظرة مُحكمة تربط المفاهيم بالقرارات التشغيلية والنتائج المالية.
+          </p>
+          <div class="mt-6 flex flex-wrap gap-2 text-sm">
+            <span class="chip"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--gold)"></i> Glass UI</span>
+            <span class="chip"><i class="fa-solid fa-bolt" style="color:var(--gold)"></i> تصميم فاخر</span>
+          </div>
+          <a class="btn mt-8" href="#s1" data-link>ابدأ العرض <i class="fa-solid fa-arrow-left"></i></a>
+        </div>
+        <div class="md:col-span-2 hero-card p-8 text-center">
+          <div style="color:var(--gold)" class="text-2xl font-extrabold mb-2">إعداد:</div>
+          <div class="title-font text-3xl font-extrabold text-white">عبدالعزيز</div>
+          <div class="mt-4 text-white/85">قسم إدارة سلاسل الإمداد</div>
+        </div>
+      </div>
+    </header>
+  </section>
 
-    <!-- 1) المدخل -->
-    <section id="s1" class="scroll-mt-28">
-      <h2 class="sect-title">١) المدخل إلى التنبؤ بالطلب</h2>
+  <!-- 1) المدخل -->
+  <section id="s1" class="page">
+    <main class="container-xx px-4 pb-14">
+      <h2 class="h text-2xl">١) المدخل إلى التنبؤ بالطلب</h2>
       <div class="grid md:grid-cols-2 gap-6 mt-6">
-        <div class="glass p-6">
-          <h3 class="title-font text-xl font-extrabold text-[#1d4ed8] mb-3"><i class="fa-solid fa-circle-info mr-2"></i> التعريف والغاية</h3>
+        <div class="card p-6">
+          <h3 class="title-font text-xl font-extrabold text-[var(--blue)] mb-3"><i class="fa-solid fa-circle-info mr-2"></i> التعريف والغاية</h3>
           <ul class="space-y-3">
-            <li class="li"><i class="fa-solid fa-crosshairs"></i><span>تحويل اللايقين في الطلب إلى أرقام قابلة للتنفيذ على مستوى SKU / منطقة / قناة.</span></li>
-            <li class="li"><i class="fa-solid fa-database"></i><span>الاعتماد على بيانات تاريخية + سياق لحظي (مواسم/أسعار/منافسة).</span></li>
-            <li class="li"><i class="fa-solid fa-diagram-project"></i><span>يربط الشراء والإنتاج والنقل والتوزيع في خطة واحدة.</span></li>
-            <li class="li"><i class="fa-solid fa-scale-balanced"></i><span>موازنة بين نقص المخزون (فقد مبيعات) وفائضه (تكلفة ورأس مال).</span></li>
-            <li class="li"><i class="fa-solid fa-sliders"></i><span>يمكّن من إدارة مستويات خدمة مستهدفة (Fill rate/OTIF).</span></li>
-            <li class="li"><i class="fa-solid fa-arrow-trend-up"></i><span>يدعم نموًا مستدامًا عبر رؤية مبكرة للاتجاهات.</span></li>
+            <li class="li"><i class="fa-solid fa-crosshairs"></i><span>تقدير كميات الطلب المستقبلية على مستوى المنتج/القناة/المنطقة لتحويل اللايقين إلى خطة.</span></li>
+            <li class="li"><i class="fa-solid fa-database"></i><span>يبنى على بيانات تاريخية + سياق لحظي (مواسم، أسعار، منافسة).</span></li>
+            <li class="li"><i class="fa-solid fa-diagram-project"></i><span>يربط الشراء والإنتاج والنقل والتوزيع في خارطة واحدة.</span></li>
+            <li class="li"><i class="fa-solid fa-scale-balanced"></i><span>يوازن بين نقص المخزون (فقد مبيعات) وفائضه (تكاليف ورأس مال مجمّد).</span></li>
+            <li class="li"><i class="fa-solid fa-shield-halved"></i><span>أساس لحساب المخزون الآمن ونقطة إعادة الطلب.</span></li>
+            <li class="li"><i class="fa-solid fa-arrow-trend-up"></i><span>يرفع القدرة على التنبه المبكر للاتجاهات ويقلّل المفاجآت.</span></li>
           </ul>
         </div>
-        <div class="glass p-6">
-          <h3 class="title-font text-xl font-extrabold text-[#1d4ed8] mb-3"><i class="fa-solid fa-warehouse mr-2"></i> العلاقة الوثيقة بالمخزون</h3>
+        <div class="card p-6">
+          <h3 class="title-font text-xl font-extrabold text-[var(--blue)] mb-3"><i class="fa-solid fa-warehouse mr-2"></i> علاقته بالمخزون</h3>
           <ul class="space-y-3">
-            <li class="li"><i class="fa-solid fa-boxes-stacked"></i><span>يجيب: ماذا نخزن؟ كم؟ متى نعيد الطلب؟</span></li>
-            <li class="li"><i class="fa-solid fa-sitemap"></i><span>يحدد أولويات التوريد عبر الفروع والقنوات.</span></li>
-            <li class="li"><i class="fa-solid fa-sack-dollar"></i><span>يخفض تجميد النقد في مخزون غير مُتحرك.</span></li>
-            <li class="li"><i class="fa-solid fa-shuffle"></i><span>يقلل أثر <b>Bullwhip</b> (تضخيم التقلبات عبر السلسلة).</span></li>
-            <li class="li"><i class="fa-solid fa-shield-halved"></i><span>أساس لحساب المخزون الآمن ووقت الاستجابة.</span></li>
-            <li class="li"><i class="fa-solid fa-clock-rotate-left"></i><span>يدير آفاقًا متدحرجة Rolling Horizon بدلاً من خطط جامدة.</span></li>
+            <li class="li"><i class="fa-solid fa-boxes-stacked"></i><span>يجيب: ماذا نخزّن؟ كم؟ ومتى نعيد الطلب؟</span></li>
+            <li class="li"><i class="fa-solid fa-sitemap"></i><span>تحديد أولويات التوريد عبر الفروع والقنوات.</span></li>
+            <li class="li"><i class="fa-solid fa-sack-dollar"></i><span>خفض تجميد النقد في مخزون بطيء الحركة.</span></li>
+            <li class="li"><i class="fa-solid fa-shuffle"></i><span>تقليل أثر <b>Bullwhip</b> (تضخيم التقلبات عبر السلسلة).</span></li>
+            <li class="li"><i class="fa-solid fa-clock-rotate-left"></i><span>إدارة آفاق متدحرجة Rolling Horizon بدل خطط جامدة.</span></li>
           </ul>
         </div>
       </div>
-    </section>
+      <div class="mt-6 flex justify-between">
+        <a class="btn" href="#cover" data-link><i class="fa-solid fa-arrow-right"></i> الغلاف</a>
+        <a class="btn" href="#s2" data-link>التالي <i class="fa-solid fa-arrow-left"></i></a>
+      </div>
+    </main>
+  </section>
 
-    <!-- 2) الأهمية -->
-    <section id="s2" class="scroll-mt-28">
-      <h2 class="sect-title">٢) الأهمية العملية لإدارة المخزون</h2>
-      <div class="grid md:grid-cols-3 gap-6 mt-6">
-        <div class="glass p-6">
-          <h3 class="font-bold text-[#1d4ed8] mb-2"><i class="fa-solid fa-tag mr-2"></i> خفض التكاليف</h3>
-          <ul class="space-y-2">
-            <li class="li"><i class="fa-solid fa-coins"></i><span>تقليل التخزين الزائد والتلف والتأمين والمساحات.</span></li>
-            <li class="li"><i class="fa-solid fa-money-bill-trend-up"></i><span>تحرير رأس المال وتحسين دوران المخزون.</span></li>
+  <!-- 2) الأهمية -->
+  <section id="s2" class="page">
+    <main class="container-xx px-4 pb-14">
+      <h2 class="h text-2xl">٢) الأهمية العملية لإدارة المخزون</h2>
+      <div class="grid md:grid-cols-2 gap-6 mt-6">
+        <div class="card p-6">
+          <ul class="space-y-3">
+            <li class="li"><i class="fa-solid fa-coins"></i><span>خفض تكاليف التخزين والتلف والتأمين والمساحات.</span></li>
+            <li class="li"><i class="fa-solid fa-money-bill-trend-up"></i><span>تحرير رأس المال عبر دوران أسرع للمخزون.</span></li>
+            <li class="li"><i class="fa-solid fa-face-smile"></i><span>رفع مستوى الخدمة وتوافر المنتج وقت الحاجة.</span></li>
+            <li class="li"><i class="fa-solid fa-truck-fast"></i><span>تحسين OTIF بمواءمة الجداول مع النقل.</span></li>
+            <li class="li"><i class="fa-solid fa-calendar-check"></i><span>دعم قرارات الشراء والإنتاج بكميات وتوقيت أدق.</span></li>
+            <li class="li"><i class="fa-solid fa-recycle"></i><span>هدر أقل واستدامة أعلى وانبعاثات أقل.</span></li>
           </ul>
         </div>
-        <div class="glass p-6">
-          <h3 class="font-bold text-[#1d4ed8] mb-2"><i class="fa-solid fa-face-smile mr-2"></i> رفع مستوى الخدمة</h3>
-          <ul class="space-y-2">
-            <li class="li"><i class="fa-solid fa-star"></i><span>توافر أعلى في اللحظة التي يريدها العميل.</span></li>
-            <li class="li"><i class="fa-solid fa-truck-fast"></i><span>تحسين OTIF وملاءمة الجداول مع النقل.</span></li>
-          </ul>
-        </div>
-        <div class="glass p-6">
-          <h3 class="font-bold text-[#1d4ed8] mb-2"><i class="fa-solid fa-chalkboard-user mr-2"></i> قرارات أدق</h3>
-          <ul class="space-y-2">
-            <li class="li"><i class="fa-solid fa-calendar-check"></i><span>توقيت الشراء والإنتاج مبني على إشارة رقمية.</span></li>
-            <li class="li"><i class="fa-solid fa-percent"></i><span>تحسين التسعير والعروض وفق مرونة الطلب.</span></li>
-          </ul>
-        </div>
-      </div>
-      <div class="grid md:grid-cols-3 gap-6 mt-6">
-        <div class="glass p-6">
-          <h3 class="font-bold text-[#1d4ed8] mb-2"><i class="fa-solid fa-diagram-next mr-2"></i> سلاسة السلسلة</h3>
-          <ul class="space-y-2">
-            <li class="li"><i class="fa-solid fa-diagram-project"></i><span>تقليل زمن الدورة والاختناقات عبر التنسيق المسبق.</span></li>
-            <li class="li"><i class="fa-solid fa-wave-square"></i><span>خفض تقلبات الطلب المنقولة للمورّدين.</span></li>
-          </ul>
-        </div>
-        <div class="glass p-6">
-          <h3 class="font-bold text-[#1d4ed8] mb-2"><i class="fa-solid fa-gauge-high mr-2"></i> مؤشرات أداء</h3>
-          <ul class="space-y-2">
-            <li class="li"><i class="fa-solid fa-chart-line"></i><span>تحسن Fill rate, Forecast Accuracy, MAPE.</span></li>
-            <li class="li"><i class="fa-solid fa-shield-heart"></i><span>استقرار أعلى في الخطط وتقليل الطوارئ.</span></li>
-          </ul>
-        </div>
-        <div class="glass p-6">
-          <h3 class="font-bold text-[#1d4ed8] mb-2"><i class="fa-solid fa-seedling mr-2"></i> استدامة</h3>
-          <ul class="space-y-2">
-            <li class="li"><i class="fa-solid fa-recycle"></i><span>هدر أقل = بصمة بيئية أخف.</span></li>
-            <li class="li"><i class="fa-solid fa-globe"></i><span>قرارات نقل وتعبئة أكثر كفاءة.</span></li>
+        <div class="card p-6">
+          <ul class="space-y-3">
+            <li class="li"><i class="fa-solid fa-chart-line"></i><span>تحسن Forecast Accuracy وMAPE وFill rate.</span></li>
+            <li class="li"><i class="fa-solid fa-bullseye"></i><span>تركيز الموارد على المنتجات الأعلى أثرًا.</span></li>
+            <li class="li"><i class="fa-solid fa-diagram-project"></i><span>تقليل الاختناقات عبر السلسلة وتناغم القرارات.</span></li>
+            <li class="li"><i class="fa-solid fa-shield-heart"></i><span>استقرار تشغيلي أعلى وتراجع البلاغات الطارئة.</span></li>
+            <li class="li"><i class="fa-solid fa-scale-balanced"></i><span>موازنة أفضل بين الكلفة ومستوى الخدمة.</span></li>
+            <li class="li"><i class="fa-solid fa-star"></i><span>سمعة أقوى وولاء عملاء أعلى.</span></li>
           </ul>
         </div>
       </div>
-    </section>
+      <div class="mt-6 flex justify-between">
+        <a class="btn" href="#s1" data-link><i class="fa-solid fa-arrow-right"></i> السابق</a>
+        <a class="btn" href="#s3" data-link>التالي <i class="fa-solid fa-arrow-left"></i></a>
+      </div>
+    </main>
+  </section>
 
-    <!-- 3) المستويات -->
-    <section id="s3" class="scroll-mt-28">
-      <h2 class="sect-title">٣) مستويات التنبؤ</h2>
+  <!-- 3) المستويات -->
+  <section id="s3" class="page">
+    <main class="container-xx px-4 pb-14">
+      <h2 class="h text-2xl">٣) مستويات التنبؤ</h2>
       <div class="grid md:grid-cols-3 gap-6 mt-6">
-        <div class="glass p-6">
-          <h3 class="font-extrabold text-[#1d4ed8] mb-2"><i class="fa-solid fa-clock mr-2"></i> قصير الأجل</h3>
+        <div class="card p-6">
+          <h3 class="font-extrabold text-[var(--blue)] mb-2"><i class="fa-solid fa-clock mr-2"></i> قصير الأجل</h3>
           <ul class="space-y-2">
-            <li class="li"><i class="fa-regular fa-calendar"></i><span>أيام–أسابيع: توزيع يومي/أسبوعي حساس للعروض والطقس.</span></li>
-            <li class="li"><i class="fa-solid fa-basket-shopping"></i><span>حالات POS ومتاجر التجزئة والمطاعم.</span></li>
+            <li class="li"><i class="fa-regular fa-calendar"></i><span>أيام–أسابيع؛ حساس للطقس والعروض.</span></li>
+            <li class="li"><i class="fa-solid fa-basket-shopping"></i><span>Retail/POS ومطاعم ومخابز.</span></li>
           </ul>
         </div>
-        <div class="glass p-6">
-          <h3 class="font-extrabold text-[#1d4ed8] mb-2"><i class="fa-solid fa-calendar-days mr-2"></i> متوسط الأجل</h3>
+        <div class="card p-6">
+          <h3 class="font-extrabold text-[var(--blue)] mb-2"><i class="fa-solid fa-calendar-days mr-2"></i> متوسط الأجل</h3>
           <ul class="space-y-2">
-            <li class="li"><i class="fa-solid fa-snowflake"></i><span>أشهر: مواسم (مدرسة/شتاء/رمضان) وحملات.</span></li>
-            <li class="li"><i class="fa-solid fa-layer-group"></i><span>محاذاة مع التخطيط التشغيلي والقدرات.</span></li>
+            <li class="li"><i class="fa-solid fa-snowflake"></i><span>أشهر؛ مواسم مدرسة/شتاء/رمضان.</span></li>
+            <li class="li"><i class="fa-solid fa-layer-group"></i><span>محاذاة مع القدرات والتسويق.</span></li>
           </ul>
         </div>
-        <div class="glass p-6">
-          <h3 class="font-extrabold text-[#1d4ed8] mb-2"><i class="fa-solid fa-calendar-check mr-2"></i> طويل الأجل</h3>
+        <div class="card p-6">
+          <h3 class="font-extrabold text-[var(--blue)] mb-2"><i class="fa-solid fa-calendar-check mr-2"></i> طويل الأجل</h3>
           <ul class="space-y-2">
-            <li class="li"><i class="fa-solid fa-industry"></i><span>سنوات: توسعات رأسمالية وسعات إنتاجية ومخازن جديدة.</span></li>
-            <li class="li"><i class="fa-solid fa-route"></i><span>تحديد مواقع ومراكز توزيع استراتيجية.</span></li>
+            <li class="li"><i class="fa-solid fa-industry"></i><span>سنوات؛ توسعات رأسمالية ومراكز توزيع.</span></li>
+            <li class="li"><i class="fa-solid fa-route"></i><span>اختيار مواقع مخازن استراتيجية.</span></li>
           </ul>
         </div>
       </div>
       <div class="grid md:grid-cols-3 gap-6 mt-6">
-        <div class="glass p-6">
-          <h3 class="font-bold text-[#1d4ed8] mb-2"><i class="fa-solid fa-network-wired mr-2"></i> هرمي وتجميعي</h3>
+        <div class="card p-6">
+          <h3 class="font-bold text-[var(--blue)] mb-2"><i class="fa-solid fa-network-wired mr-2"></i> هرمي/تجميعي</h3>
           <ul class="space-y-2">
             <li class="li"><i class="fa-solid fa-arrow-up-wide-short"></i><span>Top-down من الإجمالي إلى SKU.</span></li>
             <li class="li"><i class="fa-solid fa-arrow-down-short-wide"></i><span>Bottom-up من SKU إلى الإجمالي.</span></li>
           </ul>
         </div>
-        <div class="glass p-6">
-          <h3 class="font-bold text-[#1d4ed8] mb-2"><i class="fa-solid fa-handshake mr-2"></i> S&OP</h3>
+        <div class="card p-6">
+          <h3 class="font-bold text-[var(--blue)] mb-2"><i class="fa-solid fa-handshake mr-2"></i> S&OP</h3>
           <ul class="space-y-2">
-            <li class="li"><i class="fa-solid fa-users"></i><span>دمج المبيعات والعمليات والمالية في دورة شهرية.</span></li>
-            <li class="li"><i class="fa-solid fa-rotate"></i><span>آفاق متدحرجة Rolling Forecast.</span></li>
+            <li class="li"><i class="fa-solid fa-users"></i><span>مواءمة المبيعات والعمليات والمالية شهريًا.</span></li>
+            <li class="li"><i class="fa-solid fa-rotate"></i><span>Rolling Forecast بدل خطط جامدة.</span></li>
           </ul>
         </div>
-        <div class="glass p-6">
-          <h3 class="font-bold text-[#1d4ed8] mb-2"><i class="fa-solid fa-magnifying-glass-chart mr-2"></i> granularities</h3>
+        <div class="card p-6">
+          <h3 class="font-bold text-[var(--blue)] mb-2"><i class="fa-solid fa-location-dot mr-2"></i> درجة التفصيل</h3>
           <ul class="space-y-2">
-            <li class="li"><i class="fa-solid fa-location-dot"></i><span>حسب المنطقة/القناة/الفرع حسب توافر البيانات.</span></li>
-            <li class="li"><i class="fa-solid fa-layer-group"></i><span>اختيار الدقة التي توازن بين التفاصيل والضوضاء.</span></li>
+            <li class="li"><i class="fa-solid fa-layer-group"></i><span>SKU/فئة/منطقة حسب جودة البيانات.</span></li>
+            <li class="li"><i class="fa-solid fa-scale-balanced"></i><span>توازن بين التفاصيل والضوضاء.</span></li>
           </ul>
         </div>
       </div>
-    </section>
+      <div class="mt-6 flex justify-between">
+        <a class="btn" href="#s2" data-link><i class="fa-solid fa-arrow-right"></i> السابق</a>
+        <a class="btn" href="#s4" data-link>التالي <i class="fa-solid fa-arrow-left"></i></a>
+      </div>
+    </main>
+  </section>
 
-    <!-- 4) الأساليب -->
-    <section id="s4" class="scroll-mt-28">
-      <h2 class="sect-title">٤) أساليب التنبؤ</h2>
+  <!-- 4) الأساليب -->
+  <section id="s4" class="page">
+    <main class="container-xx px-4 pb-14">
+      <h2 class="h text-2xl">٤) أساليب التنبؤ</h2>
       <div class="grid md:grid-cols-2 gap-6 mt-6">
-        <div class="glass p-6">
-          <h3 class="title-font text-xl font-extrabold text-[#1d4ed8] mb-2"><i class="fa-solid fa-user-tie mr-2"></i> نوعية (Qualitative)</h3>
+        <div class="card p-6">
+          <h3 class="title-font text-xl font-extrabold text-[var(--blue)] mb-2"><i class="fa-solid fa-user-tie mr-2"></i> نوعية (Qualitative)</h3>
           <ul class="space-y-2">
-            <li class="li"><i class="fa-solid fa-comments"></i><span>لجان خبراء، أسلوب دلفي، مجموعات تركيز، استطلاعات.</span></li>
-            <li class="li"><i class="fa-solid fa-triangle-exclamation"></i><span>حذَر من التحيّز؛ تُستخدم كبذرة تُدمج مع الكمي.</span></li>
-            <li class="li"><i class="fa-solid fa-box-open"></i><span>مفيدة لإطلاقات المنتجات الجديدة أو الأسواق الناشئة.</span></li>
+            <li class="li"><i class="fa-solid fa-comments"></i><span>لجان خبراء، أسلوب دلفي، مجموعات تركيز.</span></li>
+            <li class="li"><i class="fa-solid fa-bullhorn"></i><span>مدخل مفيد عند إطلاق منتج جديد (غياب بيانات).</span></li>
+            <li class="li"><i class="fa-solid fa-triangle-exclamation"></i><span>معرّضة لتحيز؛ تُدمج مع الكمي للموازنة.</span></li>
           </ul>
         </div>
-        <div class="glass p-6">
-          <h3 class="title-font text-xl font-extrabold text-[#1d4ed8] mb-2"><i class="fa-solid fa-flask-vial mr-2"></i> كمية/سببية/تعلم آلي</h3>
+        <div class="card p-6">
+          <h3 class="title-font text-xl font-extrabold text-[var(--blue)] mb-2"><i class="fa-solid fa-flask-vial mr-2"></i> كمية/زمنية/تعلم آلي</h3>
           <ul class="space-y-2">
             <li class="li"><i class="fa-solid fa-wave-square"></i><span>متوسطات متحركة، تنعيم أسي، Holt-Winters.</span></li>
-            <li class="li"><i class="fa-solid fa-chart-line"></i><span>ARIMA/Prophet للسلاسل الزمنية.</span></li>
-            <li class="li"><i class="fa-solid fa-diagram-successor"></i><span>انحدار ومرونة سعرية وتأثير العروض الترويجية.</span></li>
-            <li class="li"><i class="fa-solid fa-robot"></i><span>ML (XGBoost, LSTM) عند كثافة المتغيرات وتوفر البيانات.</span></li>
-            <li class="li"><i class="fa-solid fa-layer-group"></i><span>Ensemble ومزج النماذج وتصحيح التحيّز.</span></li>
+            <li class="li"><i class="fa-solid fa-chart-line"></i><span>ARIMA/Prophet لتفكيك اتجاه/موسمية.</span></li>
+            <li class="li"><i class="fa-solid fa-diagram-successor"></i><span>انحدار سببي (السعر/العروض/الإعلان).</span></li>
+            <li class="li"><i class="fa-solid fa-robot"></i><span>ML (XGBoost/LSTM) عند كثرة المتغيرات.</span></li>
+            <li class="li"><i class="fa-solid fa-layer-group"></i><span>Ensemble ومزج النماذج لتقليل التحيّز.</span></li>
             <li class="li"><i class="fa-solid fa-vial"></i><span>اختيار نموذج بالتحقق المتقاطع وقياس MAPE/RMSE.</span></li>
           </ul>
         </div>
       </div>
-    </section>
-
-    <!-- 5) العوامل المؤثرة -->
-    <section id="s5" class="scroll-mt-28">
-      <h2 class="sect-title">٥) العوامل المؤثرة على دقة التنبؤ</h2>
-      <div class="grid md:grid-cols-2 gap-6 mt-6">
-        <div class="glass p-6">
-          <ul class="space-y-2">
-            <li class="li"><i class="fa-solid fa-snowflake"></i><span>الموسمية والعُطَل والاتجاهات بعيدة المدى.</span></li>
-            <li class="li"><i class="fa-solid fa-database"></i><span>نظافة البيانات وتوقيتها ومصدرها (POS/ERP).</span></li>
-            <li class="li"><i class="fa-solid fa-bullhorn"></i><span>العروض والسعر والإعلانات تؤثر بقوة على الطلب.</span></li>
-            <li class="li"><i class="fa-solid fa-truck-field"></i><span>أزمنة التوريد وتقلب الموردين.</span></li>
-            <li class="li"><i class="fa-solid fa-seedling"></i><span>دورة حياة المنتج (إطلاق/نمو/نضوج/تراجع).</span></li>
-            <li class="li"><i class="fa-solid fa-burst"></i><span>الأحداث غير المتوقعة: أوبئة/تعطّل سلاسل/لوائح.</span></li>
-            <li class="li"><i class="fa-solid fa-layer-group"></i><span>درجة التفصيل المناسبة (SKU/فئة/منطقة).</span></li>
-            <li class="li"><i class="fa-solid fa-brain"></i><span>تحيّزات بشرية: تفاؤل/تشاؤم/رياسة الأقوى.</span></li>
-          </ul>
-        </div>
-        <div class="glass p-6">
-          <h3 class="font-bold text-[#1d4ed8] mb-2"><i class="fa-solid fa-ruler-combined mr-2"></i> قياس وتحسين</h3>
-          <ul class="space-y-2">
-            <li class="li"><i class="fa-solid fa-chart-simple"></i><span>تتبع MAPE, MAE, RMSE بحسب الفئة والمنطقة.</span></li>
-            <li class="li"><i class="fa-solid fa-rotate"></i><span>تحسين مستمر وإعادة ملاءمة النماذج دوريًا.</span></li>
-          </ul>
-        </div>
+      <div class="mt-6 flex justify-between">
+        <a class="btn" href="#s3" data-link><i class="fa-solid fa-arrow-right"></i> السابق</a>
+        <a class="btn" href="#s5" data-link>التالي <i class="fa-solid fa-arrow-left"></i></a>
       </div>
-    </section>
+    </main>
+  </section>
 
-    <!-- 6) التطبيقات -->
-    <section id="s6" class="scroll-mt-28">
-      <h2 class="sect-title">٦) تطبيقات التنبؤ في المخزون والمخازن</h2>
+  <!-- 5) العوامل المؤثرة -->
+  <section id="s5" class="page">
+    <main class="container-xx px-4 pb-14">
+      <h2 class="h text-2xl">٥) العوامل المؤثرة على دقة التنبؤ</h2>
+      <div class="card p-6 mt-6">
+        <ul class="space-y-3">
+          <li class="li"><i class="fa-solid fa-snowflake"></i><span>الموسمية والعُطَل والاتجاهات بعيدة المدى.</span></li>
+          <li class="li"><i class="fa-solid fa-database"></i><span>نظافة البيانات، اكتمالها، توقيتها ومصدرها (POS/ERP).</span></li>
+          <li class="li"><i class="fa-solid fa-bullhorn"></i><span>السعر والعروض والإعلان وتغيّر التفضيلات.</span></li>
+          <li class="li"><i class="fa-solid fa-truck-field"></i><span>أزمنة التوريد وتقلب الموردين والقيود اللوجستية.</span></li>
+          <li class="li"><i class="fa-solid fa-diagram-project"></i><span>درجة التفصيل المختارة (SKU/فئة/منطقة).</span></li>
+          <li class="li"><i class="fa-solid fa-burst"></i><span>الأحداث غير المتوقعة: أوبئة/كوارث/لوائح.</span></li>
+          <li class="li"><i class="fa-solid fa-brain"></i><span>التحيّزات البشرية والتنظيمية في المدخلات.</span></li>
+        </ul>
+      </div>
+      <div class="card p-6 mt-6">
+        <h3 class="font-bold text-[var(--blue)] mb-2"><i class="fa-solid fa-ruler-combined mr-2"></i> قياس وتحسين</h3>
+        <ul class="space-y-2">
+          <li class="li"><i class="fa-solid fa-chart-simple"></i><span>تتبّع MAE/RMSE/MAPE حسب الفئة والمنطقة.</span></li>
+          <li class="li"><i class="fa-solid fa-rotate"></i><span>تحسين مستمر وإعادة معايرة النماذج دوريًا.</span></li>
+        </ul>
+      </div>
+      <div class="mt-6 flex justify-between">
+        <a class="btn" href="#s4" data-link><i class="fa-solid fa-arrow-right"></i> السابق</a>
+        <a class="btn" href="#s6" data-link>التالي <i class="fa-solid fa-arrow-left"></i></a>
+      </div>
+    </main>
+  </section>
+
+  <!-- 6) التطبيقات -->
+  <section id="s6" class="page">
+    <main class="container-xx px-4 pb-14">
+      <h2 class="h text-2xl">٦) تطبيقات التنبؤ في المخزون والمخازن</h2>
       <div class="grid md:grid-cols-2 gap-6 mt-6">
-        <div class="glass p-6">
+        <div class="card p-6">
           <ul class="space-y-2">
-            <li class="li"><i class="fa-solid fa-rotate"></i><span>نقطة إعادة الطلب <b>(ROP)</b> بناءً على الطلب أثناء المهلة.</span></li>
-            <li class="li"><i class="fa-solid fa-shield"></i><span>المخزون الآمن <b>(Safety Stock)</b> حسب تذبذب الطلب والتوريد.</span></li>
+            <li class="li"><i class="fa-solid fa-rotate"></i><span>نقطة إعادة الطلب <b>(ROP)</b> على أساس الطلب أثناء المهلة.</span></li>
+            <li class="li"><i class="fa-solid fa-shield"></i><span>المخزون الآمن <b>(Safety Stock)</b> وفق تذبذب الطلب والتوريد.</span></li>
             <li class="li"><i class="fa-solid fa-balance-scale"></i><span>الكمية الاقتصادية <b>(EOQ)</b> لموازنة تكاليف الطلب والتخزين.</span></li>
-            <li class="li"><i class="fa-solid fa-industry"></i><span>تخطيط السعة والإنتاج (العُمال/الماكينات/الورديات).</span></li>
-            <li class="li"><i class="fa-solid fa-diagram-project"></i><span>إعادة التزويد والتخصيص بين الفروع والقنوات.</span></li>
+            <li class="li"><i class="fa-solid fa-industry"></i><span>تخطيط السعة والإنتاج (العمّال/الماكينات/الورديات).</span></li>
+          </ul>
+        </div>
+        <div class="card p-6">
+          <ul class="space-y-2">
+            <li class="li"><i class="fa-solid fa-diagram-project"></i><span>التخصيص بين الفروع والقنوات وإعادة التزويد.</span></li>
             <li class="li"><i class="fa-solid fa-people-carry-box"></i><span>تخطيط عمّال المخزن: استلام/انتقاء/تعبئة وفق الحمل المتوقع.</span></li>
             <li class="li"><i class="fa-solid fa-truck"></i><span>جدولة النقل والتجميع لتقليل المسافات الفارغة.</span></li>
-            <li class="li"><i class="fa-solid fa-leaf"></i><span>تقليل الهدر والمرتجعات وتحسين صلاحيات المنتجات.</span></li>
-          </ul>
-        </div>
-        <div class="glass p-6">
-          <h3 class="font-bold text-[#1d4ed8] mb-2"><i class="fa-solid fa-check-double mr-2"></i> مؤشرات ناتجة</h3>
-          <ul class="space-y-2">
-            <li class="li"><i class="fa-solid fa-circle-check"></i><span>ارتفاع Fill rate وانخفاض نفاد المخزون.</span></li>
-            <li class="li"><i class="fa-solid fa-money-bill-wave"></i><span>تكلفة خدمة أقل وربحية أعلى.</span></li>
+            <li class="li"><i class="fa-solid fa-leaf"></i><span>تقليل الهدر والمرتجعات وتحسين الصلاحيات.</span></li>
           </ul>
         </div>
       </div>
-    </section>
+      <div class="mt-6 flex justify-between">
+        <a class="btn" href="#s5" data-link><i class="fa-solid fa-arrow-right"></i> السابق</a>
+        <a class="btn" href="#s7" data-link>التالي <i class="fa-solid fa-arrow-left"></i></a>
+      </div>
+    </main>
+  </section>
 
-    <!-- 7) التوجهات الحديثة -->
-    <section id="s7" class="scroll-mt-28">
-      <h2 class="sect-title">٧) التوجهات الحديثة والتحديات</h2>
+  <!-- 7) الحديثة والتحديات -->
+  <section id="s7" class="page">
+    <main class="container-xx px-4 pb-14">
+      <h2 class="h text-2xl">٧) التوجهات الحديثة والتحديات</h2>
       <div class="grid md:grid-cols-2 gap-6 mt-6">
-        <div class="glass p-6">
-          <h3 class="font-extrabold text-[#1d4ed8] mb-2"><i class="fa-solid fa-robot mr-2"></i> حديث</h3>
+        <div class="card p-6">
+          <h3 class="font-extrabold text-[var(--blue)] mb-2"><i class="fa-solid fa-robot mr-2"></i> حديث</h3>
           <ul class="space-y-2">
             <li class="li"><i class="fa-solid fa-satellite-dish"></i><span>Demand Sensing لحظي بإشارات POS والويب والطقس.</span></li>
             <li class="li"><i class="fa-solid fa-cloud-arrow-up"></i><span>أنابيب بيانات مؤتمتة وMLOps للتحديث المستمر.</span></li>
-            <li class="li"><i class="fa-solid fa-chess-board"></i><span>توائم رقمية وسيناريوهات ماذا لو What-If.</span></li>
+            <li class="li"><i class="fa-solid fa-chess-board"></i><span>توائم رقمية وسيناريوهات ماذا لو (What-If).</span></li>
             <li class="li"><i class="fa-solid fa-eye"></i><span>لوحات Explainability لقراءة أسباب التوقع.</span></li>
           </ul>
         </div>
-        <div class="glass p-6">
-          <h3 class="font-extrabold text-[#1d4ed8] mb-2"><i class="fa-solid fa-circle-exclamation mr-2"></i> تحديات</h3>
+        <div class="card p-6">
+          <h3 class="font-extrabold text-[var(--blue)] mb-2"><i class="fa-solid fa-circle-exclamation mr-2"></i> تحديات</h3>
           <ul class="space-y-2">
-            <li class="li"><i class="fa-solid fa-scale-unbalanced"></i><span>كلفة البيانات والبنى التحتية وإدارة الخصوصية.</span></li>
-            <li class="li"><i class="fa-solid fa-shuffle"></i><span>أسواق متقلبة تتطلب نماذج مرنة وتحديثاً سريعاً.</span></li>
+            <li class="li"><i class="fa-solid fa-scale-unbalanced"></i><span>كلفة البيانات والبنى وإدارة الخصوصية.</span></li>
+            <li class="li"><i class="fa-solid fa-shuffle"></i><span>أسواق متقلبة تتطلب نماذج مرنة وتحديثًا سريعًا.</span></li>
             <li class="li"><i class="fa-solid fa-user-lock"></i><span>حوكمة البيانات والأمن والامتثال.</span></li>
-            <li class="li"><i class="fa-solid fa-people-group"></i><span>تمكين الفرق البشرية وتوحيد التعاريف والمؤشرات.</span></li>
+            <li class="li"><i class="fa-solid fa-people-group"></i><span>تمكين الفرق وتوحيد التعاريف والمؤشرات.</span></li>
           </ul>
         </div>
       </div>
-    </section>
+      <div class="mt-6 flex justify-between">
+        <a class="btn" href="#s6" data-link><i class="fa-solid fa-arrow-right"></i> السابق</a>
+        <a class="btn" href="#s8" data-link>التالي <i class="fa-solid fa-arrow-left"></i></a>
+      </div>
+    </main>
+  </section>
 
-    <!-- 8) الخاتمة -->
-    <section id="s8" class="scroll-mt-28">
-      <h2 class="sect-title">الخاتمة والتلخيص</h2>
-      <div class="glass p-8 mt-6">
+  <!-- 8) الخاتمة -->
+  <section id="s8" class="page">
+    <main class="container-xx px-4 pb-16">
+      <h2 class="h text-2xl">الخاتمة والتلخيص</h2>
+      <div class="card p-8 mt-6">
         <p class="text-lg leading-8">
-          التنبؤ بالطلب ليس غاية في ذاته؛ هو <b>آلة اتخاذ قرار</b>. كلما تحسّنت الدقة واستقرّ الخطأ، انعكس ذلك على ربحية أعلى وخدمة أرقى.
+          التنبؤ بالطلب ليس غاية؛ إنه <b>آلة اتخاذ قرار</b>. امزجي النوعي بالكمّي، قيسي الأخطاء دوريًا،
+          وركّزي على جودة البيانات قبل الخوارزميات. النتيجة: تكلفة كلية أقل، خدمة أرقى، وثقة أعلى.
         </p>
-        <div class="gold-line my-6"></div>
-        <div class="grid md:grid-cols-3 gap-6">
-          <div class="glass p-6">
-            <h4 class="title-font font-extrabold text-[#1d4ed8] mb-2">ماذا نتذكر؟</h4>
+        <div class="grid md:grid-cols-3 gap-6 mt-6">
+          <div class="card p-6">
+            <h4 class="title-font font-extrabold text-[var(--blue)] mb-2">نتذكر</h4>
             <ul class="space-y-2">
-              <li class="li"><i class="fa-solid fa-check"></i><span>امزجي النوعي بالكمّي ولا تثقي بنموذج واحد.</span></li>
-              <li class="li"><i class="fa-solid fa-check"></i><span>قيسي MAPE/OTIF وراجعيها دوريًا.</span></li>
-              <li class="li"><i class="fa-solid fa-check"></i><span>النظافة أولًا: جودة البيانات قبل الخوارزميات.</span></li>
+              <li class="li"><i class="fa-solid fa-check"></i><span>لا نموذج وحيدًا يكفي—امزج النماذج.</span></li>
+              <li class="li"><i class="fa-solid fa-check"></i><span>راقب MAPE/OTIF شهريًا.</span></li>
+              <li class="li"><i class="fa-solid fa-check"></i><span>نظافة البيانات أولًا.</span></li>
             </ul>
           </div>
-          <div class="glass p-6">
-            <h4 class="title-font font-extrabold text-[#1d4ed8] mb-2">خطوات عملية</h4>
+          <div class="card p-6">
+            <h4 class="title-font font-extrabold text-[var(--blue)] mb-2">خطوات عملية</h4>
             <ul class="space-y-2">
-              <li class="li"><i class="fa-solid fa-play"></i><span>حددي مستويات الخدمة والأفق الزمني.</span></li>
-              <li class="li"><i class="fa-solid fa-broom"></i><span>نظّفي البيانات وبوّبيها حسب SKU/منطقة.</span></li>
+              <li class="li"><i class="fa-solid fa-play"></i><span>حددي مستويات الخدمة والأفق.</span></li>
+              <li class="li"><i class="fa-solid fa-broom"></i><span>نظّفي البيانات وبوّبيها.</span></li>
               <li class="li"><i class="fa-solid fa-vial"></i><span>جرّبي عدة نماذج واعملي Ensemble.</span></li>
             </ul>
           </div>
-          <div class="glass p-6">
-            <h4 class="title-font font-extrabold text-[#1d4ed8] mb-2">أثر متوقّع</h4>
+          <div class="card p-6">
+            <h4 class="title-font font-extrabold text-[var(--blue)] mb-2">أثر متوقّع</h4>
             <ul class="space-y-2">
-              <li class="li"><i class="fa-solid fa-sack-dollar"></i><span>تحرير رأس مال وخفض التكلفة الكلية.</span></li>
-              <li class="li"><i class="fa-solid fa-star"></i><span>رضا عميل أعلى وسمعة أقوى.</span></li>
-              <li class="li"><i class="fa-solid fa-seedling"></i><span>هدر أقل واستدامة أكبر.</span></li>
+              <li class="li"><i class="fa-solid fa-sack-dollar"></i><span>تحرير رأس مال وخفض التكلفة.</span></li>
+              <li class="li"><i class="fa-solid fa-star"></i><span>رضا وولاء أعلى.</span></li>
+              <li class="li"><i class="fa-solid fa-leaf"></i><span>هدر أقل واستدامة أكبر.</span></li>
             </ul>
           </div>
         </div>
         <div class="text-center mt-8">
-          <a href="#cover" class="chip"><i class="fa-solid fa-arrow-rotate-right"></i> رجوع للغلاف</a>
+          <a class="btn" href="#cover" data-link><i class="fa-solid fa-arrow-rotate-right"></i> رجوع للغلاف</a>
         </div>
       </div>
-    </section>
-
-  </main>
-
-  <!-- زر أعلى -->
-  <button id="backTop" class="chip !fixed"><i class="fa-solid fa-arrow-up"></i> أعلى</button>
-
-  <footer class="text-center py-10 text-sm text-slate-500 dark:text-slate-400">
-    تصميم فاخر – صفحة واحدة ثابتة، جاهزة للنشر على GitHub Pages / Netlify.
-  </footer>
+    </main>
+    <footer class="text-center py-10 text-sm">ثيم كحلي-ذهبي • صفحات داخلية • جاهز لـ GitHub Pages</footer>
+  </section>
 
   <script>
-    // تبديل الوضع الداكن
-    document.getElementById('toggleDark').addEventListener('click',()=>{
-      document.documentElement.classList.toggle('dark');
-    });
+    // التعامل مع "التنقّل" كصفحات داخلية
+    const pages = [...document.querySelectorAll('.page')];
+    const links = [...document.querySelectorAll('[data-link]')];
+    const topLinks = [...document.querySelectorAll('.topnav a[data-link]')];
 
-    // Scrollspy
-    const navBtns=[...document.querySelectorAll('.nav-btn')];
-    const sections=[...document.querySelectorAll('main section'), document.getElementById('cover')];
-    function setActive(hash){
-      navBtns.forEach(b=>b.classList.toggle('active', b.getAttribute('href')===hash));
+    function showPage(id){
+      pages.forEach(p=>p.classList.remove('active'));
+      const el = document.querySelector(id) || document.querySelector('#cover');
+      el.classList.add('active');
+
+      // تفعيل العنصر في الشريط العلوي
+      topLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href')===id));
+      // تمرير لأعلى
+      window.scrollTo({top:0, behavior:'instant'});
+      // ضبط الهاش
+      if(location.hash !== id){ history.replaceState(null,'', id); }
     }
-    setActive('#cover'); window.addEventListener('hashchange',()=>setActive(location.hash||'#cover'));
-    const obs=new IntersectionObserver(es=>{
-      es.forEach(e=>{
-        if(e.isIntersecting){
-          const id='#'+e.target.id;
-          setActive(id);
-          history.replaceState(null,'',id);
+
+    // روابط تنقّل
+    links.forEach(a=>{
+      a.addEventListener('click', (e)=>{
+        const href = a.getAttribute('href');
+        if(href && href.startsWith('#')){
+          e.preventDefault();
+          showPage(href);
         }
       });
-    },{rootMargin:'-50% 0px -45% 0px', threshold:0});
-    [...document.querySelectorAll('#cover, main section')].forEach(s=>obs.observe(s));
-
-    // شريط التقدم + زر للأعلى
-    const progress=document.getElementById('progress'), topBtn=document.getElementById('backTop');
-    window.addEventListener('scroll',()=>{
-      const h=document.documentElement;
-      const scrolled = (h.scrollTop)/(h.scrollHeight-h.clientHeight)*100;
-      progress.style.width=scrolled+'%';
-      topBtn.style.display = h.scrollTop>600?'block':'none';
     });
-    topBtn.onclick=()=>window.scrollTo({top:0, behavior:'smooth'});
 
-    // مفاتيح يمين/يسار
-    document.addEventListener('keydown',e=>{
-      if(['ArrowLeft','ArrowRight'].includes(e.key)){
-        const ids=['cover',...document.querySelectorAll('main section')].map(s=>s.id);
-        const cur=(location.hash?location.hash.substring(1):ids[0]), i=ids.indexOf(cur);
-        const n=e.key==='ArrowRight'?Math.min(i+1,ids.length-1):Math.max(i-1,0);
-        location.hash='#'+ids[n];
-      }
+    // حمّل الصفحة حسب الهاش
+    window.addEventListener('DOMContentLoaded', ()=>{
+      showPage(location.hash || '#cover');
+    });
+    window.addEventListener('hashchange', ()=>{
+      showPage(location.hash || '#cover');
+    });
+
+    // شريط تقدّم بسيط (على أساس موقع التمرير داخل الصفحة الظاهرة)
+    const progress = document.getElementById('progress');
+    window.addEventListener('scroll', ()=>{
+      const h = document.documentElement;
+      const sc = (h.scrollTop)/(h.scrollHeight - h.clientHeight) * 100;
+      progress.style.width = sc + '%';
     });
   </script>
 </body>
