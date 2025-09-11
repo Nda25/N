@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عرض التنبؤ بالطلب المتقدم</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f0f4f8;
+            color: #2c3e50;
+        }
+        .container-bg {
+            background-color: #ecf0f1;
+            min-height: calc(100vh - 96px);
+        }
+        .header-bg {
+            background-color: #2980b9;
+        }
+        .tab-active {
+            color: #2980b9;
+            background-color: white;
+            border-bottom: 3px solid #f39c12;
+        }
+        .slide {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            padding: 2rem;
+        }
+        .slide.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .slide-content h2 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #2980b9;
+            border-bottom: 2px solid #f39c12;
+            padding-bottom: 0.5rem;
+        }
+        .section-title {
+            background-color: #34495e;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+        .info-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+        }
+        .list-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        .list-item i {
+            font-size: 1.5rem;
+            color: #2980b9;
+            margin-left: 1rem;
+            min-width: 1.5rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <!-- شريط التنقل العلوي -->
+    <nav class="header-bg text-white p-4 shadow-lg fixed top-0 w-full z-10">
+        <div class="container mx-auto flex flex-wrap justify-center gap-2 md:gap-4">
+            <button class="nav-tab px-3 py-2 text-xs md:text-sm lg:text-base font-bold rounded-lg transition duration-300 ease-in-out hover:bg-white hover:text-blue-600" data-target="slide1">1. المدخل</button>
+            <button class="nav-tab px-3 py-2 text-xs md:text-sm lg:text-base font-bold rounded-lg transition duration-300 ease-in-out hover:bg-white hover:text-blue-600" data-target="slide2">2. الأهمية</button>
+            <button class="nav-tab px-3 py-2 text-xs md:text-sm lg:text-base font-bold rounded-lg transition duration-300 ease-in-out hover:bg-white hover:text-blue-600" data-target="slide3">3. المستويات</button>
+            <button class="nav-tab px-3 py-2 text-xs md:text-sm lg:text-base font-bold rounded-lg transition duration-300 ease-in-out hover:bg-white hover:text-blue-600" data-target="slide4">4. الأساليب</button>
+            <button class="nav-tab px-3 py-2 text-xs md:text-sm lg:text-base font-bold rounded-lg transition duration-300 ease-in-out hover:bg-white hover:text-blue-600" data-target="slide5">5. العوامل</button>
+            <button class="nav-tab px-3 py-2 text-xs md:text-sm lg:text-base font-bold rounded-lg transition duration-300 ease-in-out hover:bg-white hover:text-blue-600" data-target="slide6">6. التطبيقات</button>
+            <button class="nav-tab px-3 py-2 text-xs md:text-sm lg:text-base font-bold rounded-lg transition duration-300 ease-in-out hover:bg-white hover:text-blue-600" data-target="slide7">7. الحديثة</button>
+        </div>
+    </nav>
+
+    <main class="pt-24 md:pt-28">
+        <div class="container-bg mx-auto px-4 py-8 rounded-lg shadow-xl">
+
+            <!-- الشريحة 1: المدخل إلى التنبؤ بالطلب -->
+            <div id="slide1" class="slide active p-8 slide-content">
+                <div class="section-title">1. المدخل إلى التنبؤ بالطلب</div>
+                <div class="info-card">
+                    <h2 class="text-[#f39c12]">تعريف التنبؤ بالطلب</h2>
+                    <div class="list-item">
+                        <i class="fas fa-chart-line"></i>
+                        <p class="text-lg leading-relaxed">
+                            هو عملية تقدير كمية المنتجات أو الخدمات التي يتوقع أن يطلبها العملاء في المستقبل. هذا التقدير لا يكون عشوائيًا، بل يعتمد على تحليل بيانات سابقة (مثل حجم المبيعات في السنوات الماضية)، وظروف حالية (مثل الاتجاهات الاقتصادية أو مواسم الأعياد). التنبؤ يساعد المؤسسات على رؤية المستقبل بشكل أوضح، والتخطيط له بوعي.
+                        </p>
+                    </div>
+                    <h2 class="mt-8 text-[#f39c12]">العلاقة بالمخزون والمخازن</h2>
+                    <div class="list-item">
+                        <i class="fas fa-warehouse"></i>
+                        <p class="text-lg leading-relaxed">
+                            المخزون هو العمود الفقري لأي مؤسسة إنتاجية أو تجارية، والتنبؤ هو العقل الذي يوجهه. إذا لم يكن هناك توقع صحيح للطلب، قد نجد المخازن ممتلئة ببضائع راكدة أو فارغة من منتجات يحتاجها العملاء. فالتنبؤ يحدد “ماذا نخزن؟ وبأي كمية؟ ومتى نطلب؟”.
+                        </p>
+                    </div>
+                    <h2 class="mt-8 text-[#f39c12]">الأهمية</h2>
+                    <div class="list-item">
+                        <i class="fas fa-dollar-sign"></i>
+                        <p class="text-lg leading-relaxed">
+                            بدون وجود تنبؤ مدروس، ستواجه الشركات خطر الخسائر: من جانب، الهدر الناتج عن فائض المخزون وتكاليف التخزين؛ ومن جانب آخر، فقدان العملاء عند نفاد المنتجات. التنبؤ هو وسيلة لحماية المنظمة من هذين الخطرين.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الشريحة 2: أهمية التنبؤ بالطلب لإدارة المخزون -->
+            <div id="slide2" class="slide p-8 slide-content">
+                <div class="section-title">2. أهمية التنبؤ بالطلب لإدارة المخزون</div>
+                <div class="info-card">
+                    <h2 class="text-[#f39c12]">خفض التكاليف</h2>
+                    <div class="list-item">
+                        <i class="fas fa-tag"></i>
+                        <p class="text-lg leading-relaxed">
+                            عندما تعرف المؤسسة الكمية المتوقعة من الطلب بدقة، فإنها لا تضطر إلى شراء كميات مبالغ فيها، وبالتالي تقل تكاليف التخزين، والتأمين، وحتى التلف للمنتجات سريعة الانتهاء.
+                        </p>
+                    </div>
+                    <h2 class="mt-8 text-[#f39c12]">تحسين رضا العملاء</h2>
+                    <div class="list-item">
+                        <i class="fas fa-smile"></i>
+                        <p class="text-lg leading-relaxed">
+                            العميل يريد المنتج جاهزًا عند حاجته. وجود مخزون مبني على تنبؤ صحيح يجعل الشركة قادرة على تلبية الطلب فورًا، مما يزيد من ثقة العملاء وولائهم.
+                        </p>
+                    </div>
+                    <h2 class="mt-8 text-[#f39c12]">دعم قرارات الشراء والإنتاج</h2>
+                    <div class="list-item">
+                        <i class="fas fa-truck"></i>
+                        <p class="text-lg leading-relaxed">
+                            التنبؤ يحدد مواعيد وأحجام الشراء من الموردين بدقة، ويضبط خطط الإنتاج بحيث لا يكون هناك توقف مفاجئ أو فائض غير مبرر.
+                        </p>
+                    </div>
+                    <h2 class="mt-8 text-[#f39c12]">تحسين استخدام الموارد</h2>
+                    <div class="list-item">
+                        <i class="fas fa-cogs"></i>
+                        <p class="text-lg leading-relaxed">
+                            عندما تكون الكميات المطلوبة واضحة، يصبح استخدام الموارد المالية والبشرية واللوجستية أكثر كفاءة، فلا توجد طاقة معطلة أو نفقات غير ضرورية.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الشريحة 3: مستويات التنبؤ -->
+            <div id="slide3" class="slide p-8 slide-content">
+                <div class="section-title">3. مستويات التنبؤ</div>
+                <div class="info-card">
+                    <h2 class="text-[#f39c12]">قصير الأجل</h2>
+                    <div class="list-item">
+                        <i class="fas fa-clock"></i>
+                        <p class="text-lg leading-relaxed">
+                            يغطي أيامًا أو أسابيع، وهو مفيد لإدارة العمليات اليومية. مثل مطعم يتوقع عدد الوجبات اليومية أو سوبرماركت يحدد كمية الخبز المطلوب يوميًا. هذا النوع من التنبؤ يساعد على التعامل مع تقلبات الطلب السريعة.
+                        </p>
+                    </div>
+                    <h2 class="mt-8 text-[#f39c12]">متوسط الأجل</h2>
+                    <div class="list-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <p class="text-lg leading-relaxed">
+                            يغطي فترة تمتد لعدة أشهر، مثل الشركات التي تخطط لمبيعات الملابس في موسم الشتاء أو المنتجات المدرسية في بداية العام الدراسي. هذا النوع ضروري للمنتجات الموسمية أو الحملات الترويجية.
+                        </p>
+                    </div>
+                    <h2 class="mt-8 text-[#f39c12]">طويل الأجل</h2>
+                    <div class="list-item">
+                        <i class="fas fa-calendar-check"></i>
+                        <p class="text-lg leading-relaxed">
+                            يمتد لسنوات، ويُستخدم في الصناعات التي تحتاج استثمارات ضخمة وتخطيط بعيد المدى، مثل شركات الطيران، الطاقة، أو صناعة السيارات. هذا المستوى يساعد على التخطيط الاستراتيجي وتوسعة خطوط الإنتاج.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الشريحة 4: أساليب التنبؤ بالطلب -->
+            <div id="slide4" class="slide p-8 slide-content">
+                <div class="section-title">4. أساليب التنبؤ بالطلب</div>
+                <div class="info-card">
+                    <h2 class="text-[#f39c12]">الطرق النوعية</h2>
+                    <div class="list-item">
+                        <i class="fas fa-user-tie"></i>
+                        <p class="text-lg leading-relaxed">
+                            تعتمد على آراء الخبراء، الاستبيانات، ودراسات السوق. مثال: عند إطلاق منتج جديد لا توجد بيانات تاريخية، لذا يُستعان بآراء خبراء السوق لتقدير حجم الطلب. ميزتها أنها مفيدة في بيئات غير مستقرة، لكنها تفتقر للدقة الإحصائية.
+                        </p>
+                    </div>
+                    <h2 class="mt-8 text-[#f39c12]">الطرق الكمية</h2>
+                    <div class="list-item">
+                        <i class="fas fa-calculator"></i>
+                        <p class="text-lg leading-relaxed">
+                            تعتمد على الرياضيات والإحصاء لتحليل البيانات السابقة والتنبؤ بالمستقبل. من أهم أدواتها: المتوسطات المتحركة، السلاسل الزمنية، والانحدار (Regression).
+                        </p>
+                    </div>
+                    <h2 class="mt-8 text-[#f39c12]">المقارنة بين الطريقتين</h2>
+                    <div class="list-item">
+                        <i class="fas fa-balance-scale"></i>
+                        <p class="text-lg leading-relaxed">
+                            النوعية مناسبة عندما لا توجد بيانات كافية، والكمية مناسبة عندما تتوفر بيانات دقيقة. غالبًا الشركات الناجحة تمزج بينهما لتحقيق تنبؤ أكثر واقعية.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الشريحة 5: العوامل المؤثرة على دقة التنبؤ -->
+            <div id="slide5" class="slide p-8 slide-content">
+                <div class="section-title">5. العوامل المؤثرة على دقة التنبؤ</div>
+                <div class="info-card">
+                    <h2 class="text-[#f39c12]">الموسمية والاتجاهات</h2>
+                    <div class="list-item">
+                        <i class="fas fa-chart-bar"></i>
+                        <p class="text-lg leading-relaxed">
+                            بعض المنتجات يرتفع الطلب عليها في أوقات محددة (مثل التمور في رمضان أو الملابس الشتوية في ديسمبر). معرفة هذه الأنماط الموسمية يساعد على تحسين دقة التنبؤ.
+                        </p>
+                    </div>
+                    <h2 class="mt-8 text-[#f39c12]">جودة البيانات</h2>
+                    <div class="list-item">
+                        <i class="fas fa-database"></i>
+                        <p class="text-lg leading-relaxed">
+                            التنبؤ يعتمد على البيانات، فإذا كانت ناقصة أو غير صحيحة فستكون النتائج مضللة. لذلك من المهم بناء نظام قوي لتجميع وتحليل البيانات.
+                        </p>
+                    </div>
+                    <h2 class="mt-8 text-[#f39c12]">الأحداث غير المتوقعة</h2>
+                    <div class="list-item">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p class="text-lg leading-relaxed">
+                            مثل جائحة كورونا التي قلبت سلوك المستهلكين رأسًا على عقب، أو الأزمات الاقتصادية المفاجئة. هذه الأحداث تجعل التنبؤ صعبًا وتفرض تعديلات سريعة.
+                        </p>
+                    </div>
+                    <h2 class="mt-8 text-[#f39c12]">ديناميكية السوق</h2>
+                    <div class="list-item">
+                        <i class="fas fa-bullseye"></i>
+                        <p class="text-lg leading-relaxed">
+                            سلوك العملاء يتغير بسرعة بسبب الحملات التسويقية أو دخول منافسين جدد. التنبؤ يجب أن يكون مرنًا ليستجيب لهذه التغيرات.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الشريحة 6: تطبيقات التنبؤ بالطلب في المخزون والمخازن -->
+            <div id="slide6" class="slide p-8 slide-content">
+                <div class="section-title">6. تطبيقات التنبؤ بالطلب في المخزون والمخازن</div>
+                <div class="info-card">
+                    <h2 class="text-[#f39c12]">تحديد نقطة إعادة الطلب</h2>
+                    <div class="list-item">
+                        <i class="fas fa-undo"></i>
+                        <p class="text-lg leading-relaxed">
+                            عند وصول المخزون إلى مستوى معين، يتم إصدار طلب جديد قبل نفاده لتجنب انقطاع التوريد.
+                        </p>
+                    </div>
+                    <h2 class="mt-8 text-[#f39c12]">الكمية الاقتصادية للطلب (EOQ)</h2>
+                    <div class="list-item">
+                        <i class="fas fa-balance-scale"></i>
+                        <p class="text-lg leading-relaxed">
+                            معادلة تحدد الكمية المثالية التي تقلل تكاليف الطلب والتخزين معًا. إذا طلبت كمية صغيرة جدًا ستدفع تكاليف طلبات كثيرة، وإذا طلبت كمية كبيرة جدًا ستتحمل تكاليف تخزين عالية. EOQ يوازن بين الاثنين.
+                        </p>
+                    </div>
+                    <h2 class="mt-8 text-[#f39c12]">تقليل التكاليف والهدر</h2>
+                    <div class="list-item">
+                        <i class="fas fa-trash-alt"></i>
+                        <p class="text-lg leading-relaxed">
+                            التنبؤ الدقيق يمنع تكدس منتجات غير ضرورية أو نقص المنتجات المطلوبة.
+                        </p>
+                    </div>
+                    <h2 class="mt-8 text-[#f39c12]">دعم سلسلة الإمداد</h2>
+                    <div class="list-item">
+                        <i class="fas fa-shipping-fast"></i>
+                        <p class="text-lg leading-relaxed">
+                            المخازن جزء من سلسلة أكبر تبدأ بالمورد وتنتهي بالعميل. التنبؤ يضمن انسيابية السلسلة وعدم وجود فجوات أو تعطلات.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الشريحة 7: التوجهات الحديثة والتحديات -->
+            <div id="slide7" class="slide p-8 slide-content">
+                <div class="section-title">7. التوجهات الحديثة والتحديات</div>
+                <div class="info-card">
+                    <h2 class="text-[#f39c12]">الذكاء الاصطناعي والتعلم الآلي</h2>
+                    <div class="list-item">
+                        <i class="fas fa-robot"></i>
+                        <p class="text-lg leading-relaxed">
+                            برامج حديثة قادرة على تحليل ملايين البيانات لحظيًا والتنبؤ بسلوك المستهلك بشكل أدق، مثل أنظمة التوصية في أمازون.
+                        </p>
+                    </div>
+                    <h2 class="mt-8 text-[#f39c12]">البيانات الضخمة (Big Data)</h2>
+                    <div class="list-item">
+                        <i class="fas fa-server"></i>
+                        <p class="text-lg leading-relaxed">
+                            الشركات تجمع الآن بيانات من وسائل التواصل، أنماط الشراء الإلكترونية، وحتى الطقس لتوقع الطلب.
+                        </p>
+                    </div>
+                    <h2 class="mt-8 text-[#f39c12]">التحديات</h2>
+                    <div class="list-item">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p class="text-lg leading-relaxed">
+                            ارتفاع تكاليف أنظمة التنبؤ الحديثة. صعوبة تحقيق دقة عالية في الأسواق المتقلبة. اعتماد الشركات أحيانًا على بيانات ناقصة أو متأخرة.
+                        </p>
+                    </div>
+                    <h2 class="mt-8 text-[#f39c12]">المستقبل المتوقع</h2>
+                    <div class="list-item">
+                        <i class="fas fa-chart-pie"></i>
+                        <p class="text-lg leading-relaxed">
+                            الاتجاه هو مزج بين قوة التكنولوجيا (الذكاء الاصطناعي والتحليلات الضخمة) وبين خبرة الإنسان في قراءة السياق وفهم الثقافة المحلية.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الشريحة 8: الخاتمة -->
+            <div id="slide8" class="slide p-8 slide-content">
+                <div class="min-h-[60vh] flex flex-col justify-center items-center text-center">
+                    <h2 class="text-4xl md:text-5xl font-extrabold text-[#2980b9] mb-4">الخاتمة</h2>
+                    <div class="info-card">
+                        <p class="text-xl leading-relaxed">
+                            التنبؤ بالطلب هو القلب النابض لإدارة المخزون الحديثة. بدونه، تصبح المؤسسات عمياء أمام المستقبل، معرضة لخطر فقدان العملاء أو تحمل تكاليف تخزين مرهقة. ومع أنه لا يمكن أن يكون دقيقًا بنسبة 100%، إلا أنه يقلل الأخطاء ويزيد من كفاءة العمليات بشكل كبير. المستقبل سيشهد دورًا متزايدًا للتقنيات الحديثة مثل الذكاء الاصطناعي والبيانات الضخمة، لكن الخبرة البشرية ستبقى عنصرًا حاسمًا في توجيه القرارات. الجمع بين التحليل العلمي والحدس الإداري هو ما يصنع إدارة مخزون ناجحة قادرة على مواجهة تقلبات السوق وتحقيق رضا العملاء.
+                        </p>
+                    </div>
+                    <h3 class="mt-8 text-2xl font-bold text-[#f39c12]">شكراً لحسن استماعكم</h3>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navTabs = document.querySelectorAll('.nav-tab');
+            const slides = document.querySelectorAll('.slide');
+
+            function showSlide(targetId) {
+                slides.forEach(slide => {
+                    slide.classList.remove('active');
+                });
+                const targetSlide = document.getElementById(targetId);
+                if (targetSlide) {
+                    targetSlide.classList.add('active');
+                }
+            }
+
+            function activateTab(targetId) {
+                navTabs.forEach(tab => {
+                    tab.classList.remove('tab-active');
+                    if (tab.getAttribute('data-target') === targetId) {
+                        tab.classList.add('tab-active');
+                    }
+                });
+            }
+
+            navTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const targetId = tab.getAttribute('data-target');
+                    showSlide(targetId);
+                    activateTab(targetId);
+                });
+            });
+
+            // Show the first slide and activate its tab on page load
+            showSlide('slide1');
+            activateTab('slide1');
+        });
+    </script>
+</body>
+</html>
