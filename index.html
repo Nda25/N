@@ -1,1 +1,168 @@
-.
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إلـى إشـراق الحبردي </title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f3e9ff; /* لون الخلفية */
+            font-family: 'Tajawal', sans-serif;
+            margin: 0;
+            direction: rtl; /* لضبط اتجاه النص من اليمين لليسار */
+            overflow: hidden;
+        }
+
+        .envelope-wrapper {
+            perspective: 1000px;
+            cursor: pointer;
+            transition: transform 0.8s ease;
+        }
+
+        .envelope {
+            width: 350px;
+            height: 250px;
+            position: relative;
+            background-color: #d1b1f1; /* لون الظرف الأساسي (بنفسجي فاتح) */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            transition: transform 0.8s ease;
+        }
+
+        .flap {
+            position: absolute;
+            width: 100%;
+            height: 50%;
+            bottom: 0;
+            left: 0;
+            background-color: #b191d1; /* لون الغطاء السفلي */
+            z-index: 1;
+        }
+        
+        .flap:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 175px 125px 175px;
+            border-color: transparent transparent #b191d1 transparent;
+            transform-origin: top;
+        }
+        
+        .flap.top-flap {
+            top: 0;
+            transform-origin: top;
+            transition: transform 0.8s ease;
+            transform: rotateX(0deg);
+            z-index: 2;
+        }
+
+        .flap.top-flap:before {
+            border-width: 125px 175px 0 175px;
+            border-color: #d1b1f1 transparent transparent transparent;
+        }
+
+        .envelope.open .top-flap {
+            transform: rotateX(180deg);
+        }
+
+        .letter {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: calc(100% - 20px);
+            height: calc(100% - 20px);
+            background-color: #ffeba6; /* لون الرسالة (أصفر فاتح) */
+            border-radius: 8px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            box-sizing: border-box;
+            transform: translateY(100%);
+            opacity: 0;
+            transition: transform 0.8s ease, opacity 0.8s ease;
+            z-index: 0;
+            text-align: center;
+        }
+        
+        .envelope.open .letter {
+            transform: translateY(0);
+            opacity: 1;
+            z-index: 3;
+        }
+
+        .message-content {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #4a2c6d; /* لون النص (بنفسجي غامق) */
+        }
+
+        .title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #6a0dad; /* لون العنوان */
+            margin-bottom: 10px;
+        }
+
+        .signature {
+            margin-top: 20px;
+            font-style: italic;
+            font-weight: 700;
+        }
+
+        .click-hint {
+            position: absolute;
+            bottom: -50px;
+            font-size: 1rem;
+            color: #6a0dad;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="envelope-wrapper">
+        <div class="envelope" id="envelope">
+            <div class="flap top-flap"></div>
+            <div class="letter">
+                <div class="message-content">
+                    <p>
+                        "في يومِ المديرِ العالمي، أرفعُ لكِ رسالةَ شكرٍ تليقُ بمقامِك.
+                        شكرًا لأنكِ قدّمتِ لنا معنى القيادةِ كما ينبغي أن تكون؛
+                        إنسانيّةٌ حاضرة، وحرصٌ لا يهدأ، وتفانٍ يتركُ أثره قبل أن يُقال.
+                        لقد كان لحضوركِ في العمل أثرٌ واضحٌ في نفوسنا،
+                        فالقائدُ الحقّ لا يُسيِّر فريقَه فحسب، بل يُلهمهم ويُشعرهم أن لجهودهم قيمة.
+                        دمتِ مصدرَ أثرٍ وارتقاء"
+                    </p>
+                </div>
+            </div>
+            <div class="flap bottom-flap"></div>
+        </div>
+        <p class="click-hint">اضغط على الظرف لفتحه!</p>
+    </div>
+
+    <script>
+        document.getElementById('envelope').addEventListener('click', function() {
+            this.classList.add('open');
+            document.querySelector('.click-hint').style.display = 'none';
+        });
+    </script>
+
+</body>
+</html>
+
