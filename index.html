@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إلـى إشـراق الحبردي </title>
+    <title> إلى اشراق الحبردي </title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
         
@@ -91,6 +91,9 @@
             transition: transform 0.8s ease, opacity 0.8s ease;
             z-index: 0;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         
         .envelope.open .letter {
@@ -100,7 +103,7 @@
         }
 
         .message-content {
-            font-size: 1.2rem;
+            font-size: 1.1rem; /* تم تقليل حجم الخط هنا */
             line-height: 1.8;
             color: #4a2c6d; /* لون النص (بنفسجي غامق) */
         }
@@ -153,7 +156,7 @@
             </div>
             <div class="flap bottom-flap"></div>
         </div>
-        <p class="click-hint">اضغطي على الظرف لفتحه!</p>
+        <p class="click-hint">اضغط على الظرف لفتحه!</p>
     </div>
 
     <script>
@@ -165,4 +168,3 @@
 
 </body>
 </html>
-
